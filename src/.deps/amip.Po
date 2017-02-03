@@ -1,0 +1,5 @@
+amip.o: amip.c /usr/include/stdc-predef.h amip.h
+
+/usr/include/stdc-predef.h:
+
+amip.h:

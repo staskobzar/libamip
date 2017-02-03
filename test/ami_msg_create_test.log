@@ -1,0 +1,6 @@
+[==========] Running 1 test(s).
+[ RUN      ] test_test
+[       OK ] test_test
+[==========] 1 test(s) run.
+[  PASSED  ] 1 test(s).
+PASS ami_msg_create_test (exit status: 0)
