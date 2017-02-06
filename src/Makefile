@@ -169,6 +169,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+am__extra_recursive_targets = valgrind-recursive
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -203,8 +204,8 @@ CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CMOCKA_CFLAGS = 
 CMOCKA_LIBS = -lcmocka
-COVERAGE_CFLAGS = 
-COVERAGE_OPTFLAGS = 
+COVERAGE_CFLAGS = --coverage
+COVERAGE_OPTFLAGS = -O0
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -216,15 +217,15 @@ ECHO_N = -n
 ECHO_T = 
 EGREP = /bin/grep -E
 EXEEXT = 
-GCOV = 
-GENHTML = 
+GCOV = /usr/bin/gcov
+GENHTML = /usr/bin/genhtml
 GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LCOV = 
+LCOV = /usr/bin/lcov
 LDFLAGS = 
 LIBOBJS = 
 LIBS = 
@@ -385,6 +386,7 @@ include ./$(DEPDIR)/amip.Po
 #	$(AM_V_CC)source='$<' object='$@' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+valgrind-local: 
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -574,6 +576,10 @@ ps-am:
 
 uninstall-am: uninstall-libLIBRARIES
 
+valgrind: valgrind-am
+
+valgrind-am: valgrind-local
+
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
@@ -587,7 +593,8 @@ uninstall-am: uninstall-libLIBRARIES
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-compile mostlyclean-generic pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am uninstall-libLIBRARIES
+	tags tags-am uninstall uninstall-am uninstall-libLIBRARIES \
+	valgrind-am valgrind-local
 
 .PRECIOUS: Makefile
 

@@ -133,6 +133,7 @@ am__recursive_targets = \
   $(am__extra_recursive_targets)
 AM_RECURSIVE_TARGETS = $(am__recursive_targets:-recursive=) TAGS CTAGS \
 	cscope distdir dist dist-all distcheck
+am__extra_recursive_targets = valgrind-recursive
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) \
 	$(LISP)config.h.in
 # Read a list of newline-separated strings from the standard input,
@@ -212,8 +213,8 @@ CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CMOCKA_CFLAGS = 
 CMOCKA_LIBS = -lcmocka
-COVERAGE_CFLAGS = 
-COVERAGE_OPTFLAGS = 
+COVERAGE_CFLAGS = --coverage
+COVERAGE_OPTFLAGS = -O0
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -225,15 +226,15 @@ ECHO_N = -n
 ECHO_T = 
 EGREP = /bin/grep -E
 EXEEXT = 
-GCOV = 
-GENHTML = 
+GCOV = /usr/bin/gcov
+GENHTML = /usr/bin/genhtml
 GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LCOV = 
+LCOV = /usr/bin/lcov
 LDFLAGS = 
 LIBOBJS = 
 LIBS = 
@@ -303,8 +304,8 @@ top_builddir = .
 top_srcdir = .
 SUBDIRS = doc src test
 CTAGSFLAGS = -R src
-#COV_INFO_FILE = $(top_builddir)/coverage.info
-#COV_DIR = $(top_builddir)/coverage
+COV_INFO_FILE = $(top_builddir)/coverage.info
+COV_DIR = $(top_builddir)/coverage
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -391,6 +392,7 @@ $(am__recursive_targets):
 	if test "$$dot_seen" = "no"; then \
 	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
 	fi; test -z "$$fail"
+valgrind-local: 
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -687,7 +689,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-clean-local:
+#clean-local:
 clean: clean-recursive
 
 clean-am: clean-generic clean-local mostlyclean-am
@@ -757,6 +759,10 @@ ps-am:
 
 uninstall-am:
 
+valgrind: valgrind-recursive
+
+valgrind-am: valgrind-local
+
 .MAKE: $(am__recursive_targets) all install-am install-strip
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am \
@@ -773,31 +779,31 @@ uninstall-am:
 	installcheck installcheck-am installdirs installdirs-am \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am
+	uninstall-am valgrind-am valgrind-local
 
 .PRECIOUS: Makefile
 
-#cov:
-#	$(MAKE) $(AM_MAKEFLAGS) \
-#		CFLAGS="$(CFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_OPTFLAGS)"
-#	$(MAKE) $(AM_MAKEFLAGS) check \
-#		CFLAGS="$(CFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_OPTFLAGS)"
-#	@echo "Generating coverage report..."
-#	$(LCOV) --capture \
-#		--directory "$(top_builddir)/src" \
-#		--output-file $(COV_INFO_FILE) \
-#		--gcov-tool $(GCOV)
-#	$(GENHTML) --prefix "$(top_builddir)" \
-#		--output-directory $(COV_DIR) \
-#		--title $(PACKAGE_NAME) \
-#		--legend --show-details \
-#		$(COV_INFO_FILE)
+cov:
+	$(MAKE) $(AM_MAKEFLAGS) \
+		CFLAGS="$(CFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_OPTFLAGS)"
+	$(MAKE) $(AM_MAKEFLAGS) check \
+		CFLAGS="$(CFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_OPTFLAGS)"
+	@echo "Generating coverage report..."
+	$(LCOV) --capture \
+		--directory "$(top_builddir)/src" \
+		--output-file $(COV_INFO_FILE) \
+		--gcov-tool $(GCOV)
+	$(GENHTML) --prefix "$(top_builddir)" \
+		--output-directory $(COV_DIR) \
+		--title $(PACKAGE_NAME) \
+		--legend --show-details \
+		$(COV_INFO_FILE)
 
-#clean-local:
-#	@echo "Cleaning lcov files."
-#	@find $(top_builddir) -name "*.gcno" -exec rm -v {} \;
-#	@find $(top_builddir) -name "*.gcda" -exec rm -v {} \;
-#	@rm -rf $(top_builddir)/coverage*
+clean-local:
+	@echo "Cleaning lcov files."
+	@find $(top_builddir) -name "*.gcno" -exec rm -v {} \;
+	@find $(top_builddir) -name "*.gcda" -exec rm -v {} \;
+	@rm -rf $(top_builddir)/coverage*
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -144,6 +144,7 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(docdir)"
 DATA = $(doc_DATA)
+am__extra_recursive_targets = valgrind-recursive
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(srcdir)/Doxyfile.in $(srcdir)/Makefile.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -160,8 +161,8 @@ CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CMOCKA_CFLAGS = 
 CMOCKA_LIBS = -lcmocka
-COVERAGE_CFLAGS = 
-COVERAGE_OPTFLAGS = 
+COVERAGE_CFLAGS = --coverage
+COVERAGE_OPTFLAGS = -O0
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -173,15 +174,15 @@ ECHO_N = -n
 ECHO_T = 
 EGREP = /bin/grep -E
 EXEEXT = 
-GCOV = 
-GENHTML = 
+GCOV = /usr/bin/gcov
+GENHTML = /usr/bin/genhtml
 GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LCOV = 
+LCOV = /usr/bin/lcov
 LDFLAGS = 
 LIBOBJS = 
 LIBS = 
@@ -305,6 +306,7 @@ uninstall-docDATA:
 	@list='$(doc_DATA)'; test -n "$(docdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(docdir)'; $(am__uninstall_files_from_dir)
+valgrind-local: 
 tags TAGS:
 
 ctags CTAGS:
@@ -445,6 +447,10 @@ ps-am:
 
 uninstall-am: uninstall-docDATA
 
+valgrind: valgrind-am
+
+valgrind-am: valgrind-local
+
 .MAKE: install-am install-strip
 
 .PHONY: all all-am check check-am clean clean-generic cscopelist-am \
@@ -457,7 +463,7 @@ uninstall-am: uninstall-docDATA
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-generic pdf pdf-am ps ps-am tags-am uninstall \
-	uninstall-am uninstall-docDATA
+	uninstall-am uninstall-docDATA valgrind-am valgrind-local
 
 .PRECIOUS: Makefile
 

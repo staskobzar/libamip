@@ -151,6 +151,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+am__extra_recursive_targets = valgrind-recursive
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -390,8 +391,8 @@ CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CMOCKA_CFLAGS = 
 CMOCKA_LIBS = -lcmocka
-COVERAGE_CFLAGS = 
-COVERAGE_OPTFLAGS = 
+COVERAGE_CFLAGS = --coverage
+COVERAGE_OPTFLAGS = -O0
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -403,15 +404,15 @@ ECHO_N = -n
 ECHO_T = 
 EGREP = /bin/grep -E
 EXEEXT = 
-GCOV = 
-GENHTML = 
+GCOV = /usr/bin/gcov
+GENHTML = /usr/bin/genhtml
 GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LCOV = 
+LCOV = /usr/bin/lcov
 LDFLAGS = 
 LIBOBJS = 
 LIBS = 
@@ -580,6 +581,7 @@ ami_msg_parse_test-ami_msg_parse_test.obj: ami_msg_parse_test.c
 #	$(AM_V_CC)source='ami_msg_parse_test.c' object='ami_msg_parse_test-ami_msg_parse_test.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(ami_msg_parse_test_CFLAGS) $(CFLAGS) -c -o ami_msg_parse_test-ami_msg_parse_test.obj `if test -f 'ami_msg_parse_test.c'; then $(CYGPATH_W) 'ami_msg_parse_test.c'; else $(CYGPATH_W) '$(srcdir)/ami_msg_parse_test.c'; fi`
+valgrind-local: 
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -941,6 +943,10 @@ ps-am:
 
 uninstall-am:
 
+valgrind: valgrind-am
+
+valgrind-am: valgrind-local
+
 .MAKE: check-am install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-TESTS check-am clean \
@@ -954,10 +960,18 @@ uninstall-am:
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-compile mostlyclean-generic pdf pdf-am ps ps-am \
-	recheck tags tags-am uninstall uninstall-am
+	recheck tags tags-am uninstall uninstall-am valgrind-am \
+	valgrind-local
 
 .PRECIOUS: Makefile
 
+
+.PHONY: valgrind-local
+valgrind-local:
+	@for ut in $(TESTS);do \
+		echo "Memory test: $$ut"; \
+		valgrind $(top_builddir)/test/$${ut} 2>&1 | egrep '(ERROR|total heap usage)'; \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

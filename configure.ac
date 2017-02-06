@@ -16,6 +16,8 @@ AC_PROG_RANLIB
 AC_CONFIG_SRCDIR([src/amip.h])
 AC_CONFIG_HEADERS([config.h])
 
+AM_EXTRA_RECURSIVE_TARGETS([valgrind])
+
 # Checks for programs.
 AC_PROG_CC
 
