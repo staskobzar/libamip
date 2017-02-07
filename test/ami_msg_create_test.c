@@ -9,15 +9,17 @@ static void create_pack_funk (void **state)
 {
   (void) *state;
 
-  struct sbuf pack_str;
+  struct str pack_str;
 
   AMIPacket *pack = (AMIPacket*) XMALLOC(sizeof(AMIPacket));
 
   amipack_init (pack, AMI_ACTION);
   amipack_append (pack, Action, "CoreStatus");
+
   assert_int_equal (pack->size, 1);
 
   amipack_to_str(pack, &pack_str);
+  assert_string_equal (pack_str.buf, "Action: CoreStatus\r\n\r\n");
   amipack_destroy (pack);
 }
 

@@ -37,7 +37,7 @@
 
 #define XMALLOC malloc
 
-struct sbuf {
+struct str {
   char *buf;
   int  len;
 };
@@ -82,7 +82,7 @@ enum header_type {
   Channel2,                From,                    Queue,                   Variable,
   ChannelState,            Hint,                    Reason,                  VoiceMailbox,
   ChannelStateDesc,        Incominglimit,           RegExpire,               Waiting,
-  ChannelType,             Key,                     RegExpiry,
+  ChannelType,             Key,                     RegExpiry,               ActionID
 }; //}}}
 
 enum event_type {
@@ -173,8 +173,8 @@ typedef struct AMIHeader_ {
 
   enum header_type    type;
 
-  struct sbuf         *name;
-  struct sbuf         *value;
+  struct str         name;
+  struct str         value;
 
   struct AMIHeader_   *next;
 
@@ -202,6 +202,6 @@ int amipack_destroy(AMIPacket *pack);
 
 int amipack_append(AMIPacket *pack, enum header_type hdr_type, const char *hdr_value);
 
-int amipack_to_str(AMIPacket *pack, struct sbuf *pack_str);
+int amipack_to_str(AMIPacket *pack, struct str *pack_str);
 
 #endif

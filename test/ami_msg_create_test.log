@@ -1,8 +1,16 @@
 [==========] Running 1 test(s).
 [ RUN      ] create_pack_funk
-PACK:
+"
+" != "Action: CoreStatus
 
-[       OK ] create_pack_funk
+"
+ami_msg_create_test.c:22: error: Failure!
+
+[  FAILED  ] create_pack_funk
 [==========] 1 test(s) run.
-[  PASSED  ] 1 test(s).
-PASS ami_msg_create_test (exit status: 0)
+[  PASSED  ] 0 test(s).
+[  FAILED  ] 1 test(s), listed below:
+[  FAILED  ] create_pack_funk
+
+ 1 FAILED TEST(S)
+FAIL ami_msg_create_test (exit status: 1)

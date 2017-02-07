@@ -17,8 +17,8 @@ amip.o: amip.c /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/endian.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap-16.h /usr/include/stdlib.h \
- /usr/include/x86_64-linux-gnu/bits/string3.h amip.h \
- /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/string3.h /usr/include/assert.h \
+ amip.h /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/sys/select.h \
@@ -87,6 +87,8 @@ amip.o: amip.c /usr/include/stdc-predef.h /usr/include/stdio.h \
 /usr/include/stdlib.h:
 
 /usr/include/x86_64-linux-gnu/bits/string3.h:
+
+/usr/include/assert.h:
 
 amip.h:
 

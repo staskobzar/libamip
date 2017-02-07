@@ -27,6 +27,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
+
 #include "amip.h"
 
 static const char *pack_type_name[] = {
@@ -166,21 +168,10 @@ void amipack_init(AMIPacket *pack, enum pack_type type)
 
 int amipack_destroy (AMIPacket *pack)
 {
-  AMIHeader *hdr, *next;
-  for(hdr = pack->head; pack->size > 0;) {
-    next = hdr->next;
-    free(hdr->name->buf);
-    free(hdr->value->buf);
-    free(hdr->name);
-    free(hdr->value);
-    free (hdr);
-    pack->size--;
-    hdr=next;
-  }
-
   if (pack) {
     free(pack);
     memset(pack, 0, sizeof(AMIPacket*));
+    pack = NULL;
   }
 }
 
@@ -188,51 +179,58 @@ int amipack_append( AMIPacket *pack,
                     enum header_type hdr_type,
                     const char *hdr_value)
 {
-  AMIHeader *hdr  = (AMIHeader*) XMALLOC(sizeof(AMIHeader));
+  AMIHeader *header = (AMIHeader *) XMALLOC (sizeof (AMIHeader));
+  assert ( header != NULL );
 
-  // header name
-  hdr->name = (struct sbuf*) XMALLOC(sizeof(struct sbuf));
-  hdr->name->len  = strlen(header_type_name[hdr_type]);
-  hdr->name->buf  = (char*) XMALLOC(hdr->name->len);
-  strncpy(hdr->name->buf, header_type_name[hdr_type], hdr->name->len);
+  header->type = hdr_type;
 
-  // header value
-  hdr->value = (struct sbuf*) XMALLOC(sizeof(struct sbuf));
-  hdr->value->len  = strlen(hdr_value);
-  hdr->value->buf  = (char*) XMALLOC(hdr->value->len);
-  strncpy(hdr->value->buf, hdr_value, hdr->value->len);
+  // add header name
+  header->name.len = strlen (header_type_name[hdr_type]);
+  header->name.buf = (char *) XMALLOC (header->name.len);
+  assert(header->name.buf != NULL);
+  memcpy(header->name.buf, header_type_name[hdr_type], header->name.len);
 
-  pack->length += hdr->name->len + hdr->value->len + 4; // ": " = 2 char and CRLF = 2 char
+  // add header value
+  header->value.len = strlen (hdr_value);
+  header->value.buf = (char *) XMALLOC (header->value.len);
+  assert(header->value.buf != NULL);
+  memcpy(header->value.buf, hdr_value, header->value.len);
 
-  hdr->type       = hdr_type;
-  hdr->next       = NULL; // append function allways add header to tail of packet.
+  pack->length += header->name.len + header->value.len + 4; // ": " = 2 char and CRLF = 2 char
+
+  header->next  = NULL; // append function allways add header to tail of packet.
 
   // first header becomes head and tail
-  if(pack->size == 0) {
-    pack->head = hdr;
+  if (pack->size == 0) {
+    pack->head = header;
   } else {
-    pack->tail->next = hdr;
+    pack->tail->next = header;
   }
-  pack->tail = hdr;
+
+  pack->tail = header;
   pack->size++;
+
   return 1;
 }
 
 int amipack_to_str( AMIPacket *pack,
-                    struct sbuf *pstr)
+                    struct str *pstr)
 {
   int len = 0;
 
   pstr->len = pack->length + 2; // stanza CRLF 2 char
   pstr->buf = (char *) XMALLOC(pstr->len);
-  AMIHeader *hdr;
-  for (hdr = pack->head; hdr != pack->tail; hdr = hdr->next) {
+  assert (pstr->buf != NULL);
+
+  AMIHeader *hdr = pack->head;
+
+  while (hdr->next) {
     char buf[1024];
-    int buf_len = sprintf(buf, "%.*s: %.*s\r\n", hdr->name->len, hdr->name->buf, hdr->value->len, hdr->value->buf);
+    int buf_len = sprintf(buf, "%.*s: %.*s\r\n", hdr->name.len, hdr->name.buf, hdr->value.len, hdr->value.buf);
     strncat (pstr->buf, buf, buf_len);
   }
   strncat(pstr->buf, "\r\n", 2);
 
-  printf("PACK:\n%.*s", pstr->len, pstr->buf);
   return len;
 }
+
