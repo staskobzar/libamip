@@ -96,3 +96,16 @@ Session.vim
 tags
 
 /doc
+
+coverage.info
+coverage/
+test/*.trs
+
+confesSfsP/
+test/ami_msg_create_test
+test/ami_msg_parse_test
+*.tar.gz
+Gemfile.lock
+doc/Doxyfile
+test/*.log
+test/.deps

@@ -198,8 +198,6 @@ int amipack_append( AMIPacket *pack,
 
   pack->length += header->name.len + header->value.len + 4; // ": " = 2 char and CRLF = 2 char
 
-  header->next  = NULL; // append function allways add header to tail of packet.
-
   // first header becomes head and tail
   if (pack->size == 0) {
     pack->head = header;
@@ -208,6 +206,8 @@ int amipack_append( AMIPacket *pack,
   }
 
   pack->tail = header;
+  header->next  = NULL; // append function allways add header to tail of packet.
+
   pack->size++;
 
   return 1;
@@ -217,20 +217,23 @@ int amipack_to_str( AMIPacket *pack,
                     struct str *pstr)
 {
   int len = 0;
+  pstr->len = 0;
+  pstr->buf = NULL;
+  if (pack->size == 0) return 0;
 
+  AMIHeader *hdr;
   pstr->len = pack->length + 2; // stanza CRLF 2 char
   pstr->buf = (char *) XMALLOC(pstr->len);
   assert (pstr->buf != NULL);
 
-  AMIHeader *hdr = pack->head;
-
-  while (hdr->next) {
-    char buf[1024];
-    int buf_len = sprintf(buf, "%.*s: %.*s\r\n", hdr->name.len, hdr->name.buf, hdr->value.len, hdr->value.buf);
-    strncat (pstr->buf, buf, buf_len);
+  for ( hdr = pack->head; hdr; hdr = hdr->next) {
+    strncat (pstr->buf, hdr->name.buf, hdr->name.len);
+    strncat (pstr->buf, ": ", 2);
+    strncat (pstr->buf, hdr->value.buf, hdr->value.len);
+    strncat (pstr->buf, "\r\n", 2);
+    len += hdr->name.len + hdr->value.len + 4;
   }
-  strncat(pstr->buf, "\r\n", 2);
-
-  return len;
+  strncat (pstr->buf, "\r\n", 2);
+  return len + 2;
 }
 
