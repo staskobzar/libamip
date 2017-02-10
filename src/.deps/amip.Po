@@ -30,7 +30,7 @@ amip.o: amip.c /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h ami_types.h
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h
 
 /usr/include/stdc-predef.h:
 
@@ -121,5 +121,3 @@ amip.h:
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib.h:
-
-ami_types.h:

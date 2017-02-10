@@ -599,8 +599,8 @@ valgrind-am: valgrind-local
 .PRECIOUS: Makefile
 
 
-amip.c: amip.re
-	re2c -o $@ $^
+#amip.c: amip.re
+#	re2c -o $@ $^
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

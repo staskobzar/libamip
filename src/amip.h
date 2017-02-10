@@ -33,10 +33,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ami_types.h"
-
-#define XMALLOC malloc
-
 struct str {
   char *buf;
   int  len;
@@ -196,12 +192,22 @@ typedef struct AMIPacket_ {
 
 } AMIPacket;
 
+void str_init(struct str *str, int size);
+
+void str_destroy (struct str *s);
+
+AMIHeader *amiheader_create (enum header_type type, const char *name, const char *value);
+
+void amiheader_destroy (AMIHeader *hdr);
+
 void amipack_init(AMIPacket *pack, enum pack_type type);
 
-int amipack_destroy(AMIPacket *pack);
+void amipack_destroy(AMIPacket *pack);
 
 int amipack_append(AMIPacket *pack, enum header_type hdr_type, const char *hdr_value);
 
-int amipack_to_str(AMIPacket *pack, struct str *pack_str);
+int amiheader_to_str(AMIHeader *hdr, struct str *s);
+
+int amipack_to_str(AMIPacket *pack, struct str *s);
 
 #endif

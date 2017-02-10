@@ -8,7 +8,7 @@
 
 static int setup_pack(void **state)
 {
-  *state = (AMIPacket*) XMALLOC(sizeof(AMIPacket));
+  *state = (AMIPacket*) malloc(sizeof(AMIPacket));
   return 0;
 }
 
@@ -32,7 +32,7 @@ static void create_pack_with_no_header (void **state)
 
 static void create_pack_with_single_header (void **state)
 {
-  struct str pack_str;
+  struct str pack_str = {NULL, 0};
   AMIPacket *pack = *state;
 
   amipack_init (pack, AMI_ACTION);
@@ -44,6 +44,8 @@ static void create_pack_with_single_header (void **state)
   assert_string_equal (pack_str.buf, "Action: CoreStatus\r\n\r\n");
 
   assert_int_equal(pack_str.len, pack->length + 2); // + stanza CRLF
+
+  free(pack_str.buf);
 }
 
 static void create_pack_with_multi_headers (void **state)
