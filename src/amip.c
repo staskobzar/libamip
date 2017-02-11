@@ -155,12 +155,12 @@ static const char *action_type_name[] = {
   "DBGet",                       "Park",                        "SCCPShowChannels",            "WaitEvent",
 }; //}}}
 
-void str_init(struct str *str, int size)
+void str_init(struct str *str, size_t size)
 {
   if (size > 0) {
 
     str->len = size; // stanza CRLF 2 char
-    str->buf = (char *) calloc(1, size);
+    str->buf = (char *) malloc(size);
     assert (str->buf != NULL);
 
   } else {
@@ -273,7 +273,7 @@ int amiheader_to_str( AMIHeader *hdr,
 {
   int len = 0;
 
-  memcpy (s->buf, hdr->name.buf, hdr->name.len);
+  strncat (s->buf, hdr->name.buf, hdr->name.len);
   strncat (s->buf, ": ", 2);
   strncat (s->buf, hdr->value.buf, hdr->value.len);
   strncat (s->buf, "\r\n", 2);

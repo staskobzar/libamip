@@ -34,8 +34,8 @@
 #include <string.h>
 
 struct str {
-  char *buf;
-  int  len;
+  char    *buf;
+  size_t  len;
 };
 
 enum pack_type {
@@ -183,7 +183,7 @@ typedef struct AMIPacket_ {
 
   int             size;   /*<! Number of headers. */
 
-  int             length;
+  size_t          length;
 
   enum pack_type  type;
 
@@ -192,7 +192,7 @@ typedef struct AMIPacket_ {
 
 } AMIPacket;
 
-void str_init(struct str *str, int size);
+void str_init(struct str *str, size_t size);
 
 void str_destroy (struct str *s);
 

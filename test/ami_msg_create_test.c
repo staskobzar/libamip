@@ -64,6 +64,7 @@ static void create_pack_with_multi_headers (void **state)
   assert_string_equal (pack_str.buf, "Action: ExtensionState\r\nExten: 5555\r\nContext: inbound-local\r\n\r\n");
 
   assert_int_equal(pack_str.len, pack->length + 2); // + stanza CRLF
+  free(pack_str.buf);
 }
 
 int main(void)
