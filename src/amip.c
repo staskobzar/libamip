@@ -72,6 +72,8 @@ static const char *header_type_name[] = {
   "ChannelState",          "Hint",                  "Reason",                "VoiceMailbox",
   "ChannelStateDesc",      "Incominglimit",         "RegExpire",             "Waiting",
   "ChannelType",           "Key",                   "RegExpiry",
+  // added later
+  "ActionID",              "ExtraChannel",          "ExtraContext",          "ExtraPriority",
 }; //}}}
 
 static const char *event_type_name[]  = {
@@ -192,11 +194,13 @@ AMIHeader *amiheader_create ( enum header_type type,
 
   // add header name
   str_init (&header->name, strlen (name));
-  memcpy(header->name.buf, name, header->name.len);
+  if(header->name.buf != NULL)
+    memcpy(header->name.buf, name, header->name.len);
 
   // add header value
   str_init (&header->value, strlen (value));
-  memcpy(header->value.buf, value, header->value.len);
+  if(header->value.buf != NULL)
+    memcpy(header->value.buf, value, header->value.len);
 
   return header;
 }
@@ -247,9 +251,14 @@ int amipack_append( AMIPacket *pack,
                     enum header_type hdr_type,
                     const char *hdr_value)
 {
-  AMIHeader *header = amiheader_create (hdr_type,
-                                        (const char *)header_type_name[hdr_type],
-                                        hdr_value);
+  AMIHeader *header;
+
+  if ( hdr_type < 1 || hdr_type >= (sizeof(header_type_name)/sizeof(char*)) )
+    return -1;
+
+  header = amiheader_create (hdr_type,
+                             (const char *)header_type_name[hdr_type],
+                             hdr_value);
 
   pack->length += header->name.len + header->value.len + 4; // ": " = 2 char and CRLF = 2 char
 
@@ -265,42 +274,62 @@ int amipack_append( AMIPacket *pack,
 
   pack->size++;
 
-  return 1;
+  return 0;
 }
 
 int amiheader_to_str( AMIHeader *hdr,
                       struct str *s)
 {
-  int len = 0;
+  int len = s->len;
 
-  strncat (s->buf, hdr->name.buf, hdr->name.len);
-  strncat (s->buf, ": ", 2);
-  strncat (s->buf, hdr->value.buf, hdr->value.len);
-  strncat (s->buf, "\r\n", 2);
+  for (int i = 0; i < hdr->name.len; i++, len++) {
+    s->buf[len] = hdr->name.buf[i];
+  }
+  s->buf[len++] = ':';
+  s->buf[len++] = ' ';
 
-  len += hdr->name.len + hdr->value.len + 4;
+  for (int i = 0; i < hdr->value.len; i++, len++) {
+    s->buf[len] = hdr->value.buf[i];
+  }
+  s->buf[len++] = '\r';
+  s->buf[len++] = '\n';
 
-  return len;
+  s->len = len;
+  return s->len;
 }
 
 int amipack_to_str( AMIPacket *pack,
                     struct str *pstr)
 {
-  int len = 0;
-
   if (pack->size == 0) {
     str_init (pstr, 0);
     return 0;
   }
 
-  str_init(pstr, pack->length + 2); // stanza CRLF 2 char
+  str_init(pstr, amipack_length (pack));
 
+  pstr->len = 0;  // reset length to 0. It will be a counter
+                  // increased with each haeder by amiheader_to_str
   for (AMIHeader *hdr = pack->head; hdr; hdr = hdr->next) {
-    len += amiheader_to_str (hdr, pstr);
+    amiheader_to_str (hdr, pstr);
   }
 
-  strncat (pstr->buf, "\r\n", 2);
+  pstr->buf[pstr->len++] = '\r';
+  pstr->buf[pstr->len++] = '\n';
+  pstr->buf[pstr->len++] = '\0';
 
-  return len + 2;
+  return pstr->len;
+}
+
+struct str *amiheader_value(AMIPacket *pack, enum header_type type)
+{
+  struct str *hv = NULL;
+  for (AMIHeader *hdr = pack->head; hdr; hdr = hdr->next) {
+    if (hdr->type == type) {
+      hv = (struct str*)&hdr->value;
+      break;
+    }
+  }
+  return hv;
 }
 

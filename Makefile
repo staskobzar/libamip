@@ -208,14 +208,14 @@ AUTOCONF = ${SHELL} /home/stas/Dev/libamip/missing autoconf
 AUTOHEADER = ${SHELL} /home/stas/Dev/libamip/missing autoheader
 AUTOMAKE = ${SHELL} /home/stas/Dev/libamip/missing automake-1.15
 AWK = gawk
-CC = gcc
+CC = /usr/share/clang/scan-build-3.8/bin/../libexec/ccc-analyzer
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CMOCKA_CFLAGS = 
 CMOCKA_LIBS = -lcmocka
-COVERAGE_CFLAGS = --coverage
-COVERAGE_OPTFLAGS = -O0
-CPP = gcc -E
+COVERAGE_CFLAGS = 
+COVERAGE_OPTFLAGS = 
+CPP = /usr/share/clang/scan-build-3.8/bin/../libexec/ccc-analyzer -E
 CPPFLAGS = 
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
@@ -226,15 +226,15 @@ ECHO_N = -n
 ECHO_T = 
 EGREP = /bin/grep -E
 EXEEXT = 
-GCOV = /usr/bin/gcov
-GENHTML = /usr/bin/genhtml
+GCOV = 
+GENHTML = 
 GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LCOV = /usr/bin/lcov
+LCOV = 
 LDFLAGS = 
 LIBOBJS = 
 LIBS = 
@@ -263,7 +263,7 @@ abs_srcdir = /home/stas/Dev/libamip
 abs_top_builddir = /home/stas/Dev/libamip
 abs_top_srcdir = /home/stas/Dev/libamip
 ac_ct_AR = ar
-ac_ct_CC = gcc
+ac_ct_CC = /usr/share/clang/scan-build-3.8/bin/../libexec/ccc-analyzer
 am__include = include
 am__leading_dot = .
 am__quote = 
@@ -304,8 +304,8 @@ top_builddir = .
 top_srcdir = .
 SUBDIRS = doc src test
 CTAGSFLAGS = -R src
-COV_INFO_FILE = $(top_builddir)/coverage.info
-COV_DIR = $(top_builddir)/coverage
+#COV_INFO_FILE = $(top_builddir)/coverage.info
+#COV_DIR = $(top_builddir)/coverage
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -689,7 +689,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-#clean-local:
+clean-local:
 clean: clean-recursive
 
 clean-am: clean-generic clean-local mostlyclean-am
@@ -783,27 +783,27 @@ valgrind-am: valgrind-local
 
 .PRECIOUS: Makefile
 
-cov:
-	$(MAKE) $(AM_MAKEFLAGS) \
-		CFLAGS="$(CFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_OPTFLAGS)"
-	$(MAKE) $(AM_MAKEFLAGS) check \
-		CFLAGS="$(CFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_OPTFLAGS)"
-	@echo "Generating coverage report..."
-	$(LCOV) --capture \
-		--directory "$(top_builddir)/src" \
-		--output-file $(COV_INFO_FILE) \
-		--gcov-tool $(GCOV)
-	$(GENHTML) --prefix "$(top_builddir)" \
-		--output-directory $(COV_DIR) \
-		--title $(PACKAGE_NAME) \
-		--legend --show-details \
-		$(COV_INFO_FILE)
+#cov:
+#	$(MAKE) $(AM_MAKEFLAGS) \
+#		CFLAGS="$(CFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_OPTFLAGS)"
+#	$(MAKE) $(AM_MAKEFLAGS) check \
+#		CFLAGS="$(CFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_OPTFLAGS)"
+#	@echo "Generating coverage report..."
+#	$(LCOV) --capture \
+#		--directory "$(top_builddir)/src" \
+#		--output-file $(COV_INFO_FILE) \
+#		--gcov-tool $(GCOV)
+#	$(GENHTML) --prefix "$(top_builddir)" \
+#		--output-directory $(COV_DIR) \
+#		--title $(PACKAGE_NAME) \
+#		--legend --show-details \
+#		$(COV_INFO_FILE)
 
-clean-local:
-	@echo "Cleaning lcov files."
-	@find $(top_builddir) -name "*.gcno" -exec rm -v {} \;
-	@find $(top_builddir) -name "*.gcda" -exec rm -v {} \;
-	@rm -rf $(top_builddir)/coverage*
+#clean-local:
+#	@echo "Cleaning lcov files."
+#	@find $(top_builddir) -name "*.gcno" -exec rm -v {} \;
+#	@find $(top_builddir) -name "*.gcda" -exec rm -v {} \;
+#	@rm -rf $(top_builddir)/coverage*
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

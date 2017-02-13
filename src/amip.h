@@ -33,6 +33,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*!
+ * Return length of the packet as string representation.
+ * All headers length + CRLF stanza (2 bytes) + \0 (1 byte)
+ */
+#define amipack_length(pack) (pack)->length + 3
+
 struct str {
   char    *buf;
   size_t  len;
@@ -78,7 +84,9 @@ enum header_type {
   Channel2,                From,                    Queue,                   Variable,
   ChannelState,            Hint,                    Reason,                  VoiceMailbox,
   ChannelStateDesc,        Incominglimit,           RegExpire,               Waiting,
-  ChannelType,             Key,                     RegExpiry,               ActionID
+  ChannelType,             Key,                     RegExpiry,
+  // added later
+  ActionID,                ExtraChannel,            ExtraContext,            ExtraPriority,
 }; //}}}
 
 enum event_type {
@@ -209,5 +217,7 @@ int amipack_append(AMIPacket *pack, enum header_type hdr_type, const char *hdr_v
 int amiheader_to_str(AMIHeader *hdr, struct str *s);
 
 int amipack_to_str(AMIPacket *pack, struct str *s);
+
+struct str *amiheader_value(AMIPacket *pack, enum header_type type);
 
 #endif

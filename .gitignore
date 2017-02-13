@@ -109,3 +109,7 @@ Gemfile.lock
 doc/Doxyfile
 test/*.log
 test/.deps
+
+config.log
+*.plist/
+src/clang_output_*
