@@ -33,6 +33,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define AMI_SUCCESS 0
+#define AMI_FAIL    !AMI_SUCCESS
 /*!
  * Return length of the packet as string representation.
  * All headers length + CRLF stanza (2 bytes) + \0 (1 byte)
@@ -228,6 +230,6 @@ int amipack_to_str(AMIPacket *pack, struct str *s);
 
 struct str *amiheader_value(AMIPacket *pack, enum header_type type);
 
-int amiparse_is_prompt (const char *packet, AMIVer *version);
+int amiparse_prompt (const char *packet, AMIVer *version);
 
 #endif

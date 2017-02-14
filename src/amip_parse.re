@@ -35,7 +35,7 @@ enum yycond_prompt {
   yycmajor,
 };
 
-int amiparse_is_prompt (const char *packet, AMIVer *ver)
+int amiparse_prompt (const char *packet, AMIVer *ver)
 {
   // init version structure
   ver->major = 0;
@@ -59,7 +59,7 @@ int amiparse_is_prompt (const char *packet, AMIVer *ver)
   CRLF = "\r\n";
   DIGIT = [0-9];
 
-  <*> * { return 1; }
+  <*> * { return AMI_FAIL; }
   <init> "Asterisk Call Manager/" :=> major
 
   <minor,patch> CRLF { goto done; }
@@ -74,6 +74,6 @@ int amiparse_is_prompt (const char *packet, AMIVer *ver)
 */
 
 done:
-  return 0;
+  return AMI_SUCCESS;
 }
 
