@@ -45,7 +45,7 @@ struct str {
 };
 
 enum pack_type {
-  AMI_UNKNOWN, AMI_PROMPT, AMI_ACTION, AMI_EVENT, AMI_RESPONSE
+  AMI_UNKNOWN, AMI_ACTION, AMI_EVENT, AMI_RESPONSE
 };
 
 enum header_type {
@@ -169,6 +169,14 @@ enum action_type {
   DBDelTree,                    Originate,                    SCCPMessageDevices,           VoicemailUsersList,
   DBGet,                        Park,                         SCCPShowChannels,             WaitEvent,
 }; //}}}
+/*!
+ * AMI version structure.
+ */
+typedef struct AMIVer_ {
+  unsigned short major;
+  unsigned short minor;
+  unsigned short patch;
+} AMIVer;
 
 /*!
  * AMI header structure.
@@ -219,5 +227,7 @@ int amiheader_to_str(AMIHeader *hdr, struct str *s);
 int amipack_to_str(AMIPacket *pack, struct str *s);
 
 struct str *amiheader_value(AMIPacket *pack, enum header_type type);
+
+int amiparse_is_prompt (const char *packet, AMIVer *version);
 
 #endif
