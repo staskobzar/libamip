@@ -35,6 +35,11 @@ enum yycond_prompt {
   yycmajor,
 };
 
+enum yycond_pack {
+	yyckey,
+	yycvalue,
+};
+
 int amiparse_prompt (const char *packet, AMIVer *ver)
 {
   // init version structure
@@ -59,7 +64,7 @@ int amiparse_prompt (const char *packet, AMIVer *ver)
   CRLF = "\r\n";
   DIGIT = [0-9];
 
-  <*> * { return AMI_FAIL; }
+  <*> * { return RV_FAIL; }
   <init> "Asterisk Call Manager/" :=> major
 
   <minor,patch> CRLF { goto done; }
@@ -74,6 +79,58 @@ int amiparse_prompt (const char *packet, AMIVer *ver)
 */
 
 done:
-  return AMI_SUCCESS;
+  return RV_SUCCESS;
 }
 
+enum pack_type amiparse_pack (const char *pack_str,
+                              AMIPacket *pack)
+{
+  enum pack_type rv = AMI_UNKNOWN;
+  const char *marker = pack_str;
+  const char *cur = marker;
+  const char *ctxmarker;
+  int c = yyckey;
+  int len = 0;
+
+  const char *tok = marker;
+
+/*!re2c
+  re2c:define:YYCTYPE  = "unsigned char";
+  re2c:define:YYCURSOR = "cur";
+  re2c:define:YYMARKER = "marker";
+  re2c:define:YYCTXMARKER = "ctxmarker";
+  re2c:define:YYCONDTYPE = "yycond_pack";
+  re2c:define:YYGETCONDITION = "c";
+  re2c:define:YYGETCONDITION:naked = 1;
+  re2c:define:YYSETCONDITION = "c = @@;";
+  re2c:define:YYSETCONDITION:naked = 1;
+  re2c:yyfill:enable = 0;
+
+  CRLF = "\r\n";
+  ACTION = 'Action';
+  DATE   = 'Date';
+
+  <*> * { printf("FAILED.\n"); return 1; }
+  <key,value> CRLF CRLF { printf("Packet parsed.\n"); goto done; }
+
+  <key> ": " { tok = cur;goto yyc_value; }
+  <key> ACTION { len = cur - tok;
+                 printf("KEY (fixed): %.*s\n", len, tok);
+                 goto yyc_key; }
+  <key> DATE   { len = cur - tok;
+                 printf("KEY (fixed): %.*s\n", len, tok);
+                 goto yyc_key; }
+  <key> [^: ]+ { len = cur - tok;
+                 printf("KEY (flex): %.*s\n", len, tok);
+                 goto yyc_key; }
+
+  <value> CRLF / [a-zA-Z] { tok = cur;goto yyc_key; }
+  <value> [^\r\n]* { len = cur - tok;
+                     printf("VAL: %.*s\n", len, tok);
+                     goto yyc_value;}
+
+*/
+
+done:
+  return rv;
+}
