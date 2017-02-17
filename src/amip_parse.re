@@ -25,7 +25,18 @@
  * @author Stas Kobzar <stas.kobzar@modulis.ca>
  */
 
+#include <stdio.h>
 #include "amip.h"
+
+// re2c definitions
+/*!re2c
+  CRLF = "\r\n";
+  DIGIT = [0-9];
+
+  ACTION = 'Action';
+  DATE   = 'Date';
+
+*/
 
 // introducing types:re2c for prompt packet
 enum yycond_prompt {
@@ -61,10 +72,7 @@ int amiparse_prompt (const char *packet, AMIVer *ver)
   re2c:define:YYSETCONDITION:naked = 1;
   re2c:yyfill:enable = 0;
 
-  CRLF = "\r\n";
-  DIGIT = [0-9];
-
-  <*> * { return RV_FAIL; }
+  <init,major,minor,patch> * { return RV_FAIL; }
   <init> "Asterisk Call Manager/" :=> major
 
   <minor,patch> CRLF { goto done; }
@@ -106,11 +114,7 @@ enum pack_type amiparse_pack (const char *pack_str,
   re2c:define:YYSETCONDITION:naked = 1;
   re2c:yyfill:enable = 0;
 
-  CRLF = "\r\n";
-  ACTION = 'Action';
-  DATE   = 'Date';
-
-  <*> * { printf("FAILED.\n"); return 1; }
+  <key,value> * { printf("FAILED.\n"); return 1; }
   <key,value> CRLF CRLF { printf("Packet parsed.\n"); goto done; }
 
   <key> ": " { tok = cur;goto yyc_value; }
