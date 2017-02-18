@@ -25,7 +25,7 @@
  * @author Stas Kobzar <stas.kobzar@modulis.ca>
  */
 
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
@@ -187,15 +187,18 @@ AMIHeader *amiheader_create ( enum header_type type,
                               const char *name,
                               const char *value)
 {
+  int len = 0;
   AMIHeader *header = (AMIHeader *) malloc (sizeof (AMIHeader));
   assert ( header != NULL );
 
   header->type = type;
 
   // add header name
-  str_init (&header->name, strlen (name));
-  if(header->name.buf != NULL)
-    memcpy(header->name.buf, name, header->name.len);
+  len = strlen (name);
+  str_init (&header->name, len);
+  if(header->name.buf != NULL) {
+    memcpy(header->name.buf, name, len);
+  }
 
   // add header value
   str_init (&header->value, strlen (value));
@@ -238,7 +241,7 @@ void amipack_destroy (AMIPacket *pack)
 
   }
 
-  if (pack) {
+  if (pack != NULL) {
 
     free(pack);
     pack = NULL;
@@ -333,3 +336,20 @@ struct str *amiheader_value(AMIPacket *pack, enum header_type type)
   return hv;
 }
 
+char *substr (  const char* s,
+                size_t len,
+                size_t offset)
+{
+  int i, size;
+  if (offset >= len) {
+    return (char*)s;
+  }
+  size = len - offset + 1;
+
+  char *res = (char*) malloc (size);
+  assert(res != NULL);
+  for (i = 0; offset < len; offset++, i++) {
+    res[i] = s[offset];
+  }
+  return res;
+}

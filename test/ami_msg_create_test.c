@@ -159,6 +159,9 @@ static void pack_find_headers (void **state)
   amipack_append (pack, Cause_txt,  "Normal Clearing");
 
   // found header value
+  hv = amiheader_value(pack, Cause);
+  assert_string_equal(hv->buf, "16");
+
   hv = amiheader_value(pack, Uniqueid);
   assert_string_equal(hv->buf, "asterisk-1368479157.1");
 

@@ -234,6 +234,10 @@ struct str *amiheader_value(AMIPacket *pack, enum header_type type);
 
 int amiparse_prompt (const char *packet, AMIVer *version);
 
-enum pack_type amiparse_pack (const char *pack_str, AMIPacket *pack);
+int amiparse_stanza (const char *packet);
+
+int amiparse_pack (const char *pack_str, AMIPacket *pack);
+
+char *substr(const char* s, size_t len, size_t offset);
 
 #endif
