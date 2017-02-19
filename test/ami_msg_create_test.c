@@ -20,19 +20,17 @@ static int teardown_pack(void **state)
 
 static void create_pack_with_no_header (void **state)
 {
-  struct str pack_str;
+  struct str *pack_str;
   AMIPacket *pack = *state;
 
   amipack_init (pack, AMI_ACTION);
   assert_int_equal (pack->size, 0);
-  amipack_to_str(pack, &pack_str);
-  assert_null (pack_str.buf);
-  assert_int_equal (pack_str.len, 0);
+  assert_null ( amipack_to_str(pack) );
 }
 
 static void create_pack_with_single_header (void **state)
 {
-  struct str pack_str = {NULL, 0};
+  struct str *pack_str;
   AMIPacket *pack = *state;
 
   amipack_init (pack, AMI_ACTION);
@@ -40,17 +38,17 @@ static void create_pack_with_single_header (void **state)
 
   assert_int_equal (pack->size, 1);
 
-  amipack_to_str (pack, &pack_str);
-  assert_string_equal (pack_str.buf, "Action: CoreStatus\r\n\r\n");
+  pack_str = amipack_to_str (pack);
+  assert_string_equal (pack_str->buf, "Action: CoreStatus\r\n\r\n");
 
-  assert_int_equal(pack_str.len, amipack_length(pack));
+  assert_int_equal(pack_str->len, amipack_length(pack));
 
-  free(pack_str.buf);
+  str_destroy (pack_str);
 }
 
 static void create_pack_with_two_headers (void **state)
 {
-  struct str pack_str;
+  struct str *pack_str;
   AMIPacket *pack = *state;
 
   amipack_init (pack, AMI_ACTION);
@@ -59,16 +57,16 @@ static void create_pack_with_two_headers (void **state)
 
   assert_int_equal (pack->size, 2);
 
-  amipack_to_str(pack, &pack_str);
-  assert_string_equal (pack_str.buf, "Action: Command\r\nCommand: core show uptime\r\n\r\n");
+  pack_str = amipack_to_str (pack);
+  assert_string_equal (pack_str->buf, "Action: Command\r\nCommand: core show uptime\r\n\r\n");
 
-  assert_int_equal(pack_str.len, amipack_length (pack));
-  free(pack_str.buf);
+  assert_int_equal(pack_str->len, amipack_length (pack));
+  str_destroy (pack_str);
 }
 
 static void create_pack_with_three_headers (void **state)
 {
-  struct str pack_str;
+  struct str *pack_str;
   AMIPacket *pack = *state;
 
   amipack_init (pack, AMI_ACTION);
@@ -78,11 +76,11 @@ static void create_pack_with_three_headers (void **state)
 
   assert_int_equal (pack->size, 3);
 
-  amipack_to_str(pack, &pack_str);
-  assert_string_equal (pack_str.buf, "Action: ExtensionState\r\nExten: 5555\r\nContext: inbound-local\r\n\r\n");
+  pack_str = amipack_to_str (pack);
+  assert_string_equal (pack_str->buf, "Action: ExtensionState\r\nExten: 5555\r\nContext: inbound-local\r\n\r\n");
 
-  assert_int_equal(pack_str.len, amipack_length (pack));
-  free(pack_str.buf);
+  assert_int_equal(pack_str->len, amipack_length (pack));
+  str_destroy (pack_str);
 }
 
 static void create_pack_with_multi_headers (void **state)
@@ -94,7 +92,7 @@ static void create_pack_with_multi_headers (void **state)
                             "ExtraContext: extens-internal\r\n"
                             "Priority: 1\r\n"
                             "ExtraPriority: 1\r\n\r\n";
-  struct str pack_str;
+  struct str *pack_str;
   AMIPacket *pack = *state;
 
   amipack_init (pack, AMI_ACTION);
@@ -108,17 +106,17 @@ static void create_pack_with_multi_headers (void **state)
 
   assert_int_equal (pack->size, 7);
 
-  amipack_to_str(pack, &pack_str);
+  pack_str = amipack_to_str (pack);
 
-  assert_string_equal (pack_str.buf, pack_result);
+  assert_string_equal (pack_str->buf, pack_result);
 
-  assert_int_equal(pack_str.len, amipack_length (pack));
-  free(pack_str.buf);
+  assert_int_equal(pack_str->len, amipack_length (pack));
+  str_destroy (pack_str);
 }
 
 static void create_pack_with_none_existing_header (void **state)
 {
-  struct str pack_str;
+  struct str *pack_str;
   AMIPacket *pack = *state;
   int rv = 0;
 
@@ -137,10 +135,10 @@ static void create_pack_with_none_existing_header (void **state)
   assert_int_equal(rv, 0);
 
   assert_int_equal (pack->size, 1);
-  amipack_to_str(pack, &pack_str);
-  assert_string_equal (pack_str.buf, "Action: CoreStatus\r\n\r\n");
-  assert_int_equal(pack_str.len, amipack_length (pack));
-  free(pack_str.buf);
+  pack_str = amipack_to_str (pack);
+  assert_string_equal (pack_str->buf, "Action: CoreStatus\r\n\r\n");
+  assert_int_equal(pack_str->len, amipack_length (pack));
+  str_destroy (pack_str);
 }
 
 static void pack_find_headers (void **state)

@@ -29,6 +29,8 @@
 #include <string.h>
 #include <assert.h>
 
+#include <stdio.h>
+
 #include "amip.h"
 
 static const char *pack_type_name[] = {
@@ -157,20 +159,25 @@ static const char *action_type_name[] = {
   "DBGet",                       "Park",                        "SCCPShowChannels",            "WaitEvent",
 }; //}}}
 
-void str_init(struct str *str, size_t size)
+struct str *str_set(const char *buf)
 {
-  if (size > 0) {
+  struct str *res;
+  int len = buf == NULL ? 0 : strlen (buf);
 
-    str->len = size; // stanza CRLF 2 char
-    str->buf = (char *) malloc(size);
-    assert (str->buf != NULL);
+  res = (struct str*) malloc (sizeof(struct str));
+  assert (res != NULL);
 
-  } else {
+  res->len = len;
+  res->buf = (char *) malloc(len + 1); // +1 for \0
+  assert(res->buf != NULL);
 
-    str->len = 0;
-    str->buf = NULL;
-
+  for (int i = 0; i < len; i++) {
+    res->buf[i] = buf[i];
   }
+
+  res->buf[len] = '\0';
+
+  return res;
 }
 
 void str_destroy (struct str *s)
@@ -179,6 +186,11 @@ void str_destroy (struct str *s)
   if (s->buf) {
     free(s->buf);
     s->buf = NULL;
+  }
+
+  if (s) {
+    free(s);
+    s = NULL;
   }
 
 }
@@ -194,16 +206,10 @@ AMIHeader *amiheader_create ( enum header_type type,
   header->type = type;
 
   // add header name
-  len = strlen (name);
-  str_init (&header->name, len);
-  if(header->name.buf != NULL) {
-    memcpy(header->name.buf, name, len);
-  }
+  header->name = str_set (name);
 
   // add header value
-  str_init (&header->value, strlen (value));
-  if(header->value.buf != NULL)
-    memcpy(header->value.buf, value, header->value.len);
+  header->value = str_set (value);
 
   return header;
 }
@@ -211,8 +217,8 @@ AMIHeader *amiheader_create ( enum header_type type,
 void amiheader_destroy (AMIHeader *hdr)
 {
   if (hdr) {
-    str_destroy (&hdr->name);
-    str_destroy (&hdr->value);
+    str_destroy (hdr->name);
+    str_destroy (hdr->value);
     free(hdr);
   }
   hdr = NULL;
@@ -263,7 +269,7 @@ int amipack_append( AMIPacket *pack,
                              (const char *)header_type_name[hdr_type],
                              hdr_value);
 
-  pack->length += header->name.len + header->value.len + 4; // ": " = 2 char and CRLF = 2 char
+  pack->length += header->name->len + header->value->len + 4; // ": " = 2 char and CRLF = 2 char
 
   // first header becomes head and tail
   if (pack->size == 0) {
@@ -281,47 +287,50 @@ int amipack_append( AMIPacket *pack,
 }
 
 int amiheader_to_str( AMIHeader *hdr,
-                      struct str *s)
+                      char *buf)
 {
-  int len = s->len;
+  int len = 0;
 
-  for (int i = 0; i < hdr->name.len; i++, len++) {
-    s->buf[len] = hdr->name.buf[i];
+  for (int i = 0; i < hdr->name->len; i++, len++) {
+    buf[len] = hdr->name->buf[i];
   }
-  s->buf[len++] = ':';
-  s->buf[len++] = ' ';
+  buf[len++] = ':';
+  buf[len++] = ' ';
 
-  for (int i = 0; i < hdr->value.len; i++, len++) {
-    s->buf[len] = hdr->value.buf[i];
+  for (int i = 0; i < hdr->value->len; i++, len++) {
+    buf[len] = hdr->value->buf[i];
   }
-  s->buf[len++] = '\r';
-  s->buf[len++] = '\n';
+  buf[len++] = '\r';
+  buf[len++] = '\n';
 
-  s->len = len;
-  return s->len;
+  return len;
 }
 
-int amipack_to_str( AMIPacket *pack,
-                    struct str *pstr)
+struct str *amipack_to_str( AMIPacket *pack)
 {
+
+  int len = 0, size = 0;
   if (pack->size == 0) {
-    str_init (pstr, 0);
-    return 0;
+    return NULL;
   }
+  char *str_pack = (char*) malloc (amipack_length (pack));
+  struct str *res = (struct str*) malloc (sizeof(struct str));
 
-  str_init(pstr, amipack_length (pack));
-
-  pstr->len = 0;  // reset length to 0. It will be a counter
-                  // increased with each haeder by amiheader_to_str
   for (AMIHeader *hdr = pack->head; hdr; hdr = hdr->next) {
-    amiheader_to_str (hdr, pstr);
+    len = amiheader_to_str (hdr, str_pack);
+    str_pack += len;
+    size += len;
   }
 
-  pstr->buf[pstr->len++] = '\r';
-  pstr->buf[pstr->len++] = '\n';
-  pstr->buf[pstr->len++] = '\0';
+  *str_pack++ = '\r';  size++;
+  *str_pack++ = '\n';  size++;
+  *str_pack++ = '\0';  size++;
+  // rewind str_pack
+  str_pack = str_pack - size;
 
-  return pstr->len;
+  res->len = size;
+  res->buf = str_pack;
+  return res;
 }
 
 struct str *amiheader_value(AMIPacket *pack, enum header_type type)
@@ -329,7 +338,7 @@ struct str *amiheader_value(AMIPacket *pack, enum header_type type)
   struct str *hv = NULL;
   for (AMIHeader *hdr = pack->head; hdr; hdr = hdr->next) {
     if (hdr->type == type) {
-      hv = (struct str*)&hdr->value;
+      hv = hdr->value;
       break;
     }
   }

@@ -136,7 +136,7 @@ int main(void)
     cmocka_unit_test (parse_prompt_header_280),
     cmocka_unit_test (parse_not_prompt_pack),
     cmocka_unit_test (parse_packet_stanza),
-    cmocka_unit_test_setup_teardown (parse_action_one_header, setup_pack, teardown_pack),
+    //cmocka_unit_test_setup_teardown (parse_action_one_header, setup_pack, teardown_pack),
     //cmocka_unit_test_setup_teardown (parse_event_one_header, setup_pack, teardown_pack),
     //cmocka_unit_test_setup_teardown (parse_response_one_header, setup_pack, teardown_pack),
   };

@@ -189,8 +189,8 @@ typedef struct AMIHeader_ {
 
   enum header_type    type;
 
-  struct str         name;
-  struct str         value;
+  struct str         *name;
+  struct str         *value;
 
   struct AMIHeader_   *next;
 
@@ -212,7 +212,7 @@ typedef struct AMIPacket_ {
 
 } AMIPacket;
 
-void str_init(struct str *str, size_t size);
+struct str *str_set (const char *buf);
 
 void str_destroy (struct str *s);
 
@@ -226,9 +226,9 @@ void amipack_destroy(AMIPacket *pack);
 
 int amipack_append(AMIPacket *pack, enum header_type hdr_type, const char *hdr_value);
 
-int amiheader_to_str(AMIHeader *hdr, struct str *s);
+int amiheader_to_str(AMIHeader *hdr, char *buf);
 
-int amipack_to_str(AMIPacket *pack, struct str *s);
+struct str *amipack_to_str(AMIPacket *pack);
 
 struct str *amiheader_value(AMIPacket *pack, enum header_type type);
 
