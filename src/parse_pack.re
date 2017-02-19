@@ -36,13 +36,13 @@ enum yycond_pack {
   yycvalue,
 };
 
-int amiparse_pack (const char *pack_str,
-                              AMIPacket *pack)
+AMIPacket *amiparse_pack (const char *pack_str)
 {
-  enum pack_type rv = AMI_UNKNOWN;
+  AMIPacket *pack = (AMIPacket*) malloc(sizeof(AMIPacket));
+  amipack_init (pack, AMI_UNKNOWN);
   enum header_type hdr_type;
   const char *marker = pack_str;
-  const char *cur = marker;
+  const char *cur    = marker;
   const char *ctxmarker;
   int c = yyckey;
   int len = 0;
@@ -63,42 +63,49 @@ int amiparse_pack (const char *pack_str,
 
   CRLF = "\r\n";
 
-  ACTION = 'Action';
-  EVENT  = 'Event';
+  ACTION      = 'Action';
+  EVENT       = 'Event';
+  RESPONSE    = 'Response';
 
-  <*> * { return -1; }
+  <*> * { return NULL; }
   <key,value> CRLF CRLF { goto done; }
 
   <key> ": " { tok = cur; goto yyc_value; }
   <key> ACTION {
-                  len = cur - tok;
-                  pack->type = AMI_ACTION;
-                  rv = AMI_ACTION;
-                  hdr_type = Action;
-                  goto yyc_key;
-               }
+              len = cur - tok;
+              pack->type = AMI_ACTION;
+              hdr_type = Action;
+              goto yyc_key;
+            }
   <key> EVENT  {
-                  len = cur - tok;
-                  pack->type = AMI_EVENT;
-                  rv = AMI_EVENT;
-                  hdr_type = Event;
-                  goto yyc_key;
-               }
-  <key> [^: ]+ { len = cur - tok;
-                 hdr_type = HDR_UNKNOWN ;
-                 goto yyc_key; }
+              len = cur - tok;
+              pack->type = AMI_EVENT;
+              hdr_type = Event;
+              goto yyc_key;
+            }
+  <key> RESPONSE  {
+              len = cur - tok;
+              pack->type = AMI_RESPONSE;
+              hdr_type = Response;
+              goto yyc_key;
+            }
+  <key> [^: ]+ {
+              len = cur - tok;
+              hdr_type = HDR_UNKNOWN ;
+              goto yyc_key;
+            }
 
-  <value> CRLF / [a-zA-Z] { tok = cur;goto yyc_key; }
+  <value> CRLF / [a-zA-Z] { tok = cur; goto yyc_key; }
   <value> [^\r\n]* {
-                      len = cur - tok;
-                      char *val = substr(tok, len, 0);
-                      amipack_append(pack, hdr_type, "CoreStatus");
-                      free (val);
-                      goto yyc_value;
-                   }
+              len = cur - tok;
+              char *val = substr(tok, len, 0);
+              amipack_append(pack, hdr_type, val);
+              free (val);
+              goto yyc_value;
+            }
 
 */
 
 done:
-  return rv;
+  return pack;
 }

@@ -162,7 +162,7 @@ static const char *action_type_name[] = {
 struct str *str_set(const char *buf)
 {
   struct str *res;
-  int len = buf == NULL ? 0 : strlen (buf);
+  int len = buf == NULL ? 0 : (int)strlen (buf);
 
   res = (struct str*) malloc (sizeof(struct str));
   assert (res != NULL);

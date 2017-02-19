@@ -236,7 +236,7 @@ int amiparse_prompt (const char *packet, AMIVer *version);
 
 int amiparse_stanza (const char *packet);
 
-int amiparse_pack (const char *pack_str, AMIPacket *pack);
+AMIPacket *amiparse_pack (const char *pack_str);
 
 char *substr(const char* s, size_t len, size_t offset);
 
