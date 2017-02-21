@@ -8,7 +8,7 @@
 
 static int setup_pack(void **state)
 {
-  *state = (AMIPacket*) malloc(sizeof(AMIPacket));
+  *state = (AMIPacket *) amipack_init ();
   return 0;
 }
 
@@ -23,7 +23,6 @@ static void create_pack_with_no_header (void **state)
   struct str *pack_str;
   AMIPacket *pack = *state;
 
-  amipack_init (pack, AMI_ACTION);
   assert_int_equal (pack->size, 0);
   assert_null ( amipack_to_str(pack) );
 }
@@ -33,7 +32,7 @@ static void create_pack_with_single_header (void **state)
   struct str *pack_str;
   AMIPacket *pack = *state;
 
-  amipack_init (pack, AMI_ACTION);
+  amipack_type(pack, AMI_ACTION);
   amipack_append (pack, Action, "CoreStatus");
 
   assert_int_equal (pack->size, 1);
@@ -51,7 +50,7 @@ static void create_pack_with_two_headers (void **state)
   struct str *pack_str;
   AMIPacket *pack = *state;
 
-  amipack_init (pack, AMI_ACTION);
+  amipack_type(pack, AMI_ACTION);
   amipack_append (pack, Action, "Command");
   amipack_append (pack, CommandHdr, "core show uptime");
 
@@ -69,7 +68,7 @@ static void create_pack_with_three_headers (void **state)
   struct str *pack_str;
   AMIPacket *pack = *state;
 
-  amipack_init (pack, AMI_ACTION);
+  amipack_type(pack, AMI_ACTION);
   amipack_append (pack, Action, "ExtensionState");
   amipack_append (pack, Exten, "5555");
   amipack_append (pack, Context, "inbound-local");
@@ -95,7 +94,7 @@ static void create_pack_with_multi_headers (void **state)
   struct str *pack_str;
   AMIPacket *pack = *state;
 
-  amipack_init (pack, AMI_ACTION);
+  amipack_type(pack, AMI_ACTION);
   amipack_append (pack, Action, "Redirect");
   amipack_append (pack, Channel, "SIP/5558877449-C-00006cf");
   amipack_append (pack, ExtraChannel, "SIP/258-C-000069a");
@@ -120,7 +119,7 @@ static void create_pack_with_none_existing_header (void **state)
   AMIPacket *pack = *state;
   int rv = 0;
 
-  amipack_init (pack, AMI_ACTION);
+  amipack_type(pack, AMI_ACTION);
 
   rv = amipack_append (pack, 1024*1024, "InvalidHeader");
   assert_int_equal(rv, -1);
@@ -146,7 +145,7 @@ static void pack_find_headers (void **state)
   AMIPacket *pack = *state;
   struct str *hv; // header value
 
-  amipack_init (pack, AMI_EVENT);
+  amipack_type(pack, AMI_EVENT);
   amipack_append (pack, Event,      "Hangup");
   amipack_append (pack, Privilege,  "dialplan,all");
   amipack_append (pack, Channel,    "PJSIP/kermit-00000001");
@@ -170,6 +169,10 @@ static void pack_find_headers (void **state)
   assert_int_equal (pack->type, AMI_EVENT);
 
 }
+
+// TODO: add unknown header
+// TODO (?): find header by name
+// TODO (?): find value
 
 int main(void)
 {

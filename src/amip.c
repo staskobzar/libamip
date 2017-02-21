@@ -224,15 +224,16 @@ void amiheader_destroy (AMIHeader *hdr)
   hdr = NULL;
 }
 
-void amipack_init(AMIPacket *pack, enum pack_type type)
+AMIPacket *amipack_init()
 {
+  AMIPacket *pack = (AMIPacket*) malloc(sizeof(AMIPacket));
   pack->size = 0;
   pack->length = 0;
-  pack->type = type;
+  pack->type = AMI_UNKNOWN;
   pack->head = NULL;
   pack->tail = NULL;
 
-  return;
+  return pack;
 }
 
 void amipack_destroy (AMIPacket *pack)
@@ -269,6 +270,21 @@ int amipack_append( AMIPacket *pack,
                              (const char *)header_type_name[hdr_type],
                              hdr_value);
 
+  return amipack_list_append (pack, header);
+}
+
+int amipack_append_unknown (AMIPacket *pack,
+                            const char *name,
+                            const char *value)
+{
+  AMIHeader *header = amiheader_create (HDR_UNKNOWN, name, value);
+
+  return amipack_list_append (pack, header);
+}
+
+int amipack_list_append (AMIPacket *pack,
+                         AMIHeader *header)
+{
   pack->length += header->name->len + header->value->len + 4; // ": " = 2 char and CRLF = 2 char
 
   // first header becomes head and tail
@@ -283,7 +299,7 @@ int amipack_append( AMIPacket *pack,
 
   pack->size++;
 
-  return 0;
+  return RV_SUCCESS;
 }
 
 int amiheader_to_str( AMIHeader *hdr,
@@ -343,6 +359,31 @@ struct str *amiheader_value(AMIPacket *pack, enum header_type type)
     }
   }
   return hv;
+}
+
+int amiparse_stanza (const char *packet, int size)
+{
+  unsigned short flag = 0;
+  char c = 0, prev = 0;
+  for (int i = 0; i < size; i++) {
+    c = packet[i];
+    switch(c) {
+      case '\r':
+        if (flag == 4) flag = 2;
+        flag++;
+        prev = c;
+        break;
+      case '\n':
+        if (prev == '\r') flag++;
+        prev = c;
+        break;
+      default:
+        flag = 0;
+        break;
+    }
+  }
+
+  return flag == 4 ? RV_SUCCESS : RV_FAIL;
 }
 
 char *substr (  const char* s,

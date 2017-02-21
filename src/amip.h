@@ -43,6 +43,8 @@
  */
 #define amipack_length(pack) (pack)->length + 3
 
+#define amipack_type(pack, ptype) (pack)->type = ptype
+
 struct str {
   char    *buf;
   size_t  len;
@@ -220,11 +222,15 @@ AMIHeader *amiheader_create (enum header_type type, const char *name, const char
 
 void amiheader_destroy (AMIHeader *hdr);
 
-void amipack_init(AMIPacket *pack, enum pack_type type);
+AMIPacket *amipack_init();
 
 void amipack_destroy(AMIPacket *pack);
 
 int amipack_append(AMIPacket *pack, enum header_type hdr_type, const char *hdr_value);
+
+int amipack_append_unknown(AMIPacket *pack, const char *name, const char *value);
+
+int amipack_list_append (AMIPacket *pack, AMIHeader *header);
 
 int amiheader_to_str(AMIHeader *hdr, char *buf);
 
@@ -234,10 +240,10 @@ struct str *amiheader_value(AMIPacket *pack, enum header_type type);
 
 int amiparse_prompt (const char *packet, AMIVer *version);
 
-int amiparse_stanza (const char *packet);
-
-AMIPacket *amiparse_pack (const char *pack_str);
+int amiparse_stanza (const char *packet, int size);
 
 char *substr(const char* s, size_t len, size_t offset);
+
+AMIPacket *amiparse_pack (const char *pack_str);
 
 #endif
