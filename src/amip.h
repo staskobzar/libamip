@@ -246,4 +246,6 @@ char *substr(const char* s, size_t len, size_t offset);
 
 AMIPacket *amiparse_pack (const char *pack_str);
 
+const char *header_name(enum header_type type);
+
 #endif

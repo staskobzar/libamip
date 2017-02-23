@@ -217,6 +217,25 @@ AMIPacket *amiparse_pack (const char *pack_str)
   <key,value> CRLF CRLF { goto done; }
 
   <key> ": " { tok = cur; goto yyc_value; }
+  <key> ": " CRLF / [a-zA-Z] {
+              tok = cur;
+              if (hdr_type == HDR_UNKNOWN) {
+                amipack_append_unknown (pack, hdr_name, NULL);
+              } else {
+                amipack_append (pack, hdr_type, NULL);
+              }
+              goto yyc_key;
+            }
+  <key> ": " CRLF CRLF {
+              tok = cur;
+              if (hdr_type == HDR_UNKNOWN) {
+                amipack_append_unknown (pack, hdr_name, NULL);
+                free (hdr_name);
+              } else {
+                amipack_append (pack, hdr_type, NULL);
+              }
+              goto done;
+            }
   <key> ACTION {
               amipack_type (pack, AMI_ACTION);
               SET_HEADER(Action);
@@ -228,12 +247,6 @@ AMIPacket *amiparse_pack (const char *pack_str)
   <key> RESPONSE  {
               amipack_type (pack, AMI_RESPONSE);
               SET_HEADER(Response);
-            }
-  <key> [^: ]+ {
-              len = cur - tok;
-              hdr_type = HDR_UNKNOWN;
-              hdr_name = substr (tok, len, 0);
-              goto yyc_key;
             }
   <key> ACCOUNT      { SET_HEADER(Account); }
   <key> ACCOUNTCODE      { SET_HEADER(AccountCode); }
@@ -373,8 +386,14 @@ AMIPacket *amiparse_pack (const char *pack_str)
   <key> VARIABLE      { SET_HEADER(Variable); }
   <key> VOICEMAILBOX      { SET_HEADER(VoiceMailbox); }
   <key> WAITING      { SET_HEADER(Waiting); }
+  <key> [^: ]+ {
+              len = cur - tok;
+              hdr_type = HDR_UNKNOWN;
+              hdr_name = substr (tok, len, 0);
+              goto yyc_key;
+            }
 
-  <value> CRLF / [a-zA-Z] { tok = cur; goto yyc_key; }
+  <value> CRLF / [a-zA-Z] { tok = cur - 1; goto yyc_key; }
   <value> [^\r\n]* {
               len = cur - tok;
               char *val = substr(tok, len, 0);

@@ -33,6 +33,8 @@
 
 #include "amip.h"
 
+#define valid_hdr_type(type) (type > 0 && type <= (sizeof(header_type_name)/sizeof(char*)))
+
 static const char *pack_type_name[] = {
   "AMI_UNKNOWN", "AMI_PROMPT", "AMI_ACTION", "AMI_EVENT", "AMI_RESPONSE"
 };
@@ -263,7 +265,7 @@ int amipack_append( AMIPacket *pack,
 {
   AMIHeader *header;
 
-  if ( hdr_type < 1 || hdr_type >= (sizeof(header_type_name)/sizeof(char*)) )
+  if ( !valid_hdr_type(hdr_type) )
     return -1;
 
   header = amiheader_create (hdr_type,
@@ -363,27 +365,17 @@ struct str *amiheader_value(AMIPacket *pack, enum header_type type)
 
 int amiparse_stanza (const char *packet, int size)
 {
-  unsigned short flag = 0;
-  char c = 0, prev = 0;
-  for (int i = 0; i < size; i++) {
-    c = packet[i];
-    switch(c) {
-      case '\r':
-        if (flag == 4) flag = 2;
-        flag++;
-        prev = c;
-        break;
-      case '\n':
-        if (prev == '\r') flag++;
-        prev = c;
-        break;
-      default:
-        flag = 0;
-        break;
-    }
-  }
+  if (size < 5) return RV_FAIL;
 
-  return flag == 4 ? RV_SUCCESS : RV_FAIL;
+  // CRLF CRLF \000 - total 5 char
+  if ( packet[size - 5] == '\r' &&
+       packet[size - 4] == '\n' &&
+       packet[size - 3] == '\r' &&
+       packet[size - 2] == '\n'
+      )
+    return RV_SUCCESS;
+  else
+    return RV_FAIL;
 }
 
 char *substr (  const char* s,
@@ -401,5 +393,12 @@ char *substr (  const char* s,
   for (i = 0; offset < len; offset++, i++) {
     res[i] = s[offset];
   }
+  res[len] = '\0';
   return res;
+}
+
+const char *header_name(enum header_type type)
+{
+  if(!valid_hdr_type(type)) return NULL;
+  return header_type_name[type];
 }
