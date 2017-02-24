@@ -238,6 +238,8 @@ struct str *amipack_to_str(AMIPacket *pack);
 
 struct str *amiheader_value(AMIPacket *pack, enum header_type type);
 
+struct str *amiheader_value_by_hdr_name(AMIPacket *pack, const char *header_name);
+
 int amiparse_prompt (const char *packet, AMIVer *version);
 
 int amiparse_stanza (const char *packet, int size);

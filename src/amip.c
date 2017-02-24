@@ -363,6 +363,19 @@ struct str *amiheader_value(AMIPacket *pack, enum header_type type)
   return hv;
 }
 
+struct str *amiheader_value_by_hdr_name(AMIPacket *pack,
+                                        const char *header_name)
+{
+  struct str *hv = NULL;
+  for (AMIHeader *hdr = pack->head; hdr; hdr = hdr->next) {
+    if (strcasecmp(hdr->name->buf, header_name ) == 0) {
+      hv = hdr->value;
+      break;
+    }
+  }
+  return hv;
+}
+
 int amiparse_stanza (const char *packet, int size)
 {
   if (size < 5) return RV_FAIL;
