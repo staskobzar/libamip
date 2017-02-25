@@ -93,6 +93,7 @@ enum header_type {
   ChannelType,             Key,                     RegExpiry,
   // added later
   ActionID,                ExtraChannel,            ExtraContext,            ExtraPriority,
+  Output,
 }; //}}}
 
 enum event_type {

@@ -394,6 +394,82 @@ static void parse_pack_with_invalid_header (void **state)
 
 }
 
+static void parse_pack_command_output (void **state)
+{
+  (void)*state;
+  AMIPacket *pack;
+  int ret;
+  struct str *hv; // header value
+
+  const char str_pack[] = "Response: Follows\r\n"
+                          "ActionID: 12345\r\n"
+                          "Privilege: Command\r\n"
+                          "Channel              Location             State   Application(Data)             \n"
+                          "Local/5143607296@dia IVR_603@default:1    Up      AppDial((Outgoing Line))      \n"
+                          "Local/5146020115@dia 5146020115@dial-foll Ring    Dial(SIP/5146020115@drspa.ntek\n"
+                          "1754093 calls processed\n"
+                          "--END COMMAND--\r\n\r\n";
+
+  const char output_cmp[] = "Channel              Location             State   Application(Data)             \n"
+                          "Local/5143607296@dia IVR_603@default:1    Up      AppDial((Outgoing Line))      \n"
+                          "Local/5146020115@dia 5146020115@dial-foll Ring    Dial(SIP/5146020115@drspa.ntek\n"
+                          "1754093 calls processed\n";
+
+  ret = amiparse_stanza (str_pack, sizeof(str_pack));
+  assert_int_equal (RV_SUCCESS, ret);
+
+  pack = amiparse_pack (str_pack);
+  assert_int_equal (AMI_RESPONSE, pack->type);
+
+  hv = amiheader_value(pack, Privilege);
+  assert_string_equal(hv->buf, "Command");
+
+  hv = amiheader_value(pack, ActionID);
+  assert_string_equal(hv->buf, "12345");
+
+  hv = amiheader_value(pack, Output);
+  assert_string_equal(hv->buf, output_cmp);
+
+  amipack_destroy (pack);
+}
+
+/*
+ * Command output compatibale with AMI v2
+ * Command output is a value of the header "Output: "
+ */
+static void parse_pack_command_output_v2 (void **state)
+{
+  (void)*state;
+  AMIPacket *pack;
+  int ret;
+  struct str *hv; // header value
+
+  const char str_pack[] = "Response: Follows\r\n"
+                          "Message: Command output follows\r\n"
+                          "Output: Name/username             Host                                    Dyn Forcerport Comedia    ACL Port     Status      Description                      \r\n"
+                          "8888/8888                 (Unspecified)                            D  Auto (No)  No             0        Unmonitored                                  \n"
+                          "1 sip peers [Monitored: 0 online, 0 offline Unmonitored: 0 online, 1 offline]\n"
+                          "--END COMMAND--\r\n\r\n";
+
+  const char output_cmp[] = "Output: Name/username             Host                                    Dyn Forcerport Comedia    ACL Port     Status      Description                      \r\n"
+                          "8888/8888                 (Unspecified)                            D  Auto (No)  No             0        Unmonitored                                  \n"
+                          "1 sip peers [Monitored: 0 online, 0 offline Unmonitored: 0 online, 1 offline]\n";
+
+  ret = amiparse_stanza (str_pack, sizeof(str_pack));
+  assert_int_equal (RV_SUCCESS, ret);
+
+  pack = amiparse_pack (str_pack);
+  assert_int_equal (AMI_RESPONSE, pack->type);
+
+  hv = amiheader_value(pack, Message);
+  assert_string_equal(hv->buf, "Command output follows");
+
+  hv = amiheader_value(pack, Output);
+  assert_string_equal(hv->buf, output_cmp);
+
+  amipack_destroy (pack);
+}
+
 int main(void)
 {
   const struct CMUnitTest tests[] = {
@@ -414,6 +490,8 @@ int main(void)
     cmocka_unit_test (parse_multi_str_compound),
     cmocka_unit_test (parse_pack_unordered),
     cmocka_unit_test (parse_pack_with_invalid_header),
+    cmocka_unit_test (parse_pack_command_output),
+    cmocka_unit_test (parse_pack_command_output_v2),
   };
   return cmocka_run_group_tests_name("Parse AMI package tests.", tests, NULL, NULL);
 }

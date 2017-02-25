@@ -78,6 +78,7 @@ static const char *header_type_name[] = {
   "ChannelType",           "Key",                   "RegExpiry",
   // added later
   "ActionID",              "ExtraChannel",          "ExtraContext",          "ExtraPriority",
+  "Output",
 }; //}}}
 
 static const char *event_type_name[]  = {
