@@ -1,3 +1,4 @@
 language: c
 before_install:
-  - sudo apt-get install -y cmocka
+  - sudo apt-cache search cmocka
+  - sudo apt-get install -y libcmocka0
