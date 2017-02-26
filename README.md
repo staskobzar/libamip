@@ -1,7 +1,7 @@
-## libanip: Asterisk Manager Interface Library
+## libamip: Asterisk Manager Interface Library
 
 Simple library for manipulating and parsing AMI (Asterisk Manager Interface)
-written with C and re2c for parcing. 
+written with C and re2c for parsing. 
 It does not provide any network capabilities. 
 Can be used with other network libraries like APR or in extenstions for Ruby or Python.
 
