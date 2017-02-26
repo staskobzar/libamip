@@ -30,6 +30,9 @@ Run ```make``` and check "doc/html/index.html".
 
 See example in "example" directory.
 
+There is a wiki with some breif description:
+https://github.com/staskobzar/libamip/wiki/
+
 #### Example
 To compile example, first run "make" to build library.
 Than change to "example" directory and make example.
