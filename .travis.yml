@@ -1,4 +1,10 @@
 language: c
+dist: trusty
+os:
+  - linux
 before_install:
+  - sudo apt-get -qq update
   - sudo apt-cache search cmocka
   - sudo apt-get install -y libcmocka0
+
+script: ./bootstrap && ./configure && make && make check
