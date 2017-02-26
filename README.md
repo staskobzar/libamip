@@ -30,5 +30,15 @@ Run ```make``` and check "doc/html/index.html".
 
 See example in "example" directory.
 
+#### Example
+To compile example, first run "make" to build library.
+Than change to "example" directory and make example.
+```
+make
+cd example
+make -f example.mk
+./ami_example
+```
+
 [1]: https://travis-ci.org/staskobzar/libamip.svg?branch=master
 [2]: https://travis-ci.org/staskobzar/libamip
