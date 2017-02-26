@@ -5,6 +5,7 @@ if WITH_COVERAGE
 COV_INFO_FILE = $(top_builddir)/coverage.info
 COV_DIR = $(top_builddir)/coverage
 cov:
+	@mkdir coverage || :
 	$(MAKE) $(AM_MAKEFLAGS) \
 		CFLAGS="$(CFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_OPTFLAGS)"
 	$(MAKE) $(AM_MAKEFLAGS) check \

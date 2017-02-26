@@ -28,6 +28,7 @@
 #include "amip.h"
 
 // introducing types:re2c for prompt packet
+/*! re2c condition markers */
 enum yycond_prompt {
   yycinit,
   yycminor,

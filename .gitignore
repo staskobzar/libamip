@@ -115,3 +115,7 @@ config.log
 *.plist/
 src/clang_output_*
 src/.deps/
+
+*.gcda
+*.gcno
+

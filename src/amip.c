@@ -33,6 +33,10 @@
 
 #include "amip.h"
 
+/**
+ * Macro to detect if given header type is valid.
+ * @param type      Header type
+ */
 #define valid_hdr_type(type) (type > 0 && type <= (sizeof(header_type_name)/sizeof(char*)))
 
 static const char *pack_type_name[] = {

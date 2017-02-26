@@ -19,7 +19,7 @@
  */
 
 /**
- * @file amip_parse.c
+ * @file parse_pack.c
  * @brief AMI (Asterisk Management Interface) packet parser.
  *
  * @author Stas Kobzar <stas.kobzar@modulis.ca>
@@ -29,10 +29,19 @@
 #include <string.h>
 #include "amip.h"
 
+/**
+ * Commands to run when standard header parsed.
+ * @param flag    Header type
+ */
 #define SET_HEADER(flag)  len = cur - tok; \
                           hdr_type = flag; \
                           goto yyc_key;
 
+/**
+ * Commands to run on Command AMI response header.
+ * @param offset  Header name offset
+ * @param flag    Header type
+ */
 #define CMD_HEADER(offset, flag) len = cur - tok - offset; tok += offset; \
                           while(*tok == ' ') { tok++; len--; } \
                           len -= 2; \
@@ -40,8 +49,8 @@
                           amipack_append (pack, flag, val); \
                           free (val); tok = cur; goto yyc_command;
 
-// introducing types:re2c for prompt packet
-
+// introducing types:re2c for AMI packet
+/*! re2c parcing conditions. */
 enum yycond_pack {
   yyckey,
   yycvalue,

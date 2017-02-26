@@ -33,8 +33,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-// return values
+/*! Value to return on success. */
 #define RV_SUCCESS 0
+/*! Value to return on fail. */
 #define RV_FAIL    !RV_SUCCESS
 
 /*!
@@ -43,17 +44,24 @@
  */
 #define amipack_length(pack) (pack)->length + 3
 
+/*! Set AMI packet type. */
 #define amipack_type(pack, ptype) (pack)->type = ptype
 
+/*!
+ * String structure for libamip library.
+ * Stores char array and its length.
+ */
 struct str {
-  char    *buf;
-  size_t  len;
+  char    *buf; /*!< String buffer. */
+  size_t  len;  /*!< String length. */
 };
 
+/*! AMI packet types. */
 enum pack_type {
   AMI_UNKNOWN, AMI_ACTION, AMI_EVENT, AMI_RESPONSE
 };
 
+/*! AMI headers types. Extracted from Asterisk source. */
 enum header_type {
 //{{{
   HDR_UNKNOWN,             CodecOrder,              LastApplication,         RemoteStationID,
@@ -96,6 +104,7 @@ enum header_type {
   Output,
 }; //}}}
 
+/*! AMI Event header types. Extracted from Asterisk source. */
 enum event_type {
 //{{{
   EVENT_UNKNOWN,           ChannelTalkingStop,      InvalidAccountID,        PresenceStatus,
@@ -136,6 +145,7 @@ enum event_type {
   ChannelTalkingStart,     IdentifyDetail,
 }; //}}}
 
+/*! AMI Action header types. Extracted from Asterisk source. */
 enum action_type {
 //{{{
   ACTION_UNKNOWN,               DBPut,                        ParkedCalls,                  SCCPShowDevice,
@@ -176,13 +186,14 @@ enum action_type {
   DBDelTree,                    Originate,                    SCCPMessageDevices,           VoicemailUsersList,
   DBGet,                        Park,                         SCCPShowChannels,             WaitEvent,
 }; //}}}
+
 /*!
- * AMI version structure.
+ * AMI semantic version structure. Used when AMI prompt line parsed.
  */
 typedef struct AMIVer_ {
-  unsigned short major;
-  unsigned short minor;
-  unsigned short patch;
+  unsigned short major; /*!< major */
+  unsigned short minor; /*!< minor */
+  unsigned short patch; /*!< patch */
 } AMIVer;
 
 /*!
@@ -190,12 +201,12 @@ typedef struct AMIVer_ {
  */
 typedef struct AMIHeader_ {
 
-  enum header_type    type;
+  enum header_type    type;  /*!< AMI Header type. */
 
-  struct str         *name;
-  struct str         *value;
+  struct str         *name;  /*!< AMI header name as string. */
+  struct str         *value; /*!< AMI header value as string. */
 
-  struct AMIHeader_   *next;
+  struct AMIHeader_   *next; /*!< Next AMI header pointer. Linked list element. */
 
 } AMIHeader;
 
@@ -204,51 +215,164 @@ typedef struct AMIHeader_ {
  */
 typedef struct AMIPacket_ {
 
-  int             size;   /*<! Number of headers. */
+  int             size;   /*!< Number of headers. */
 
-  size_t          length;
+  size_t          length; /*!< Total length of all headers as string. */
 
-  enum pack_type  type;
+  enum pack_type  type;   /*!< AMI packet type: Action, Event etc. */
 
-  AMIHeader       *head;
-  AMIHeader       *tail;
+  AMIHeader       *head;  /*!< Linked list head pointer to AMI header. */
+  AMIHeader       *tail;  /*!< Linked list tail pointer to AMI header. */
 
 } AMIPacket;
 
+/**
+ * Inititate string.
+ * @param buf   Char array to set with struct str.
+ * @return pointer to new struct str
+ */
 struct str *str_set (const char *buf);
 
+/**
+ * Destroy string and free allocated memory.
+ * @param s   String to destroy
+ */
 void str_destroy (struct str *s);
 
+/**
+ * Create new AMI header with given parameters.
+ * Will allocated memory for AMIHeader and return pointer to it.
+ * @param type    AMI header type
+ * @param name    AMI header name
+ * @param value   AMI header value
+ * @return AMIHeader pointer to the new structure.
+ */
 AMIHeader *amiheader_create (enum header_type type, const char *name, const char *value);
 
+/**
+ * Destroy AMI header and free memory.
+ * @param hdr   AMI header to destroy
+ */
 void amiheader_destroy (AMIHeader *hdr);
 
+/**
+ * Initiate AMIPacket and allocate memory.
+ * AMI packet is implemented as linked list data structure.
+ * @return AMIPacket pointer to the new structure.
+ */
 AMIPacket *amipack_init();
 
+/**
+ * Destroy AMI packet and free memory.
+ * @param pack    AMI header to destroy
+ */
 void amipack_destroy(AMIPacket *pack);
 
+/**
+ * Append header to AMI packet.
+ * Will create new AMI header using given type and value string.
+ * New header will be appanded to the head of linked list.
+ * @param pack      Pointer to AMI packet structure
+ * @param hdr_type  AMI header type to create.
+ * @param hdr_value AMI header value as string.
+ * @return -1 if error or RV_SUCCESS
+ */
 int amipack_append(AMIPacket *pack, enum header_type hdr_type, const char *hdr_value);
 
+/**
+ * Append AMI header to AMI packet when type is unknown.
+ * Will create new AMI header with type HDR_UNKNOWN and set provided name and value.
+ * If AMI header is successfuly created, it will be appended to AMI packet.
+ * @param pack      AMI packet structure pointer
+ * @param name      AMI header name string
+ * @param value     AMI header value as string
+ * @return -1 if error or RV_SUCCESS
+ */
 int amipack_append_unknown(AMIPacket *pack, const char *name, const char *value);
 
+/**
+ * Append AMI header to packet.
+ * @param pack      AMI packet structure pointer
+ * @param header    AMI header structure pointer
+ * @return -1 if error or RV_SUCCESS
+ */
 int amipack_list_append (AMIPacket *pack, AMIHeader *header);
 
+/**
+ * Convert AMIHeader to string.
+ * @param hdr       AMI header structure pointer
+ * @param buf       Header as string "Name: value\r\n"
+ * @return header length
+ */
 int amiheader_to_str(AMIHeader *hdr, char *buf);
 
+/**
+ * Convert AMIPacket to string.
+ * @param pack      AMI packet structure pointer
+ * @return pointer to AMI packet as string
+ */
 struct str *amipack_to_str(AMIPacket *pack);
 
+/**
+ * Search header by header type. Will return value
+ * if header in packet exists. Will return only first found
+ * header value.
+ * @param pack      AMI packet structure pointer
+ * @param type      Header type to search
+ * @return NULL or pointer to string struct which contains header value
+ */
 struct str *amiheader_value(AMIPacket *pack, enum header_type type);
 
+/**
+ * Search header by header name. Will return value
+ * if header with given name in packet exists. Will return only
+ * first found header value.
+ * @param pack      AMI packet structure pointer
+ * @param header_name Header name to search
+ * @return NULL or pointer to string struct which contains header value
+ */
 struct str *amiheader_value_by_hdr_name(AMIPacket *pack, const char *header_name);
 
+/**
+ * Parse AMI protocol prompt string when user logged in.
+ * Will set AMIver structure with parsed server AMI version.
+ * Prompt header example: Asterisk Call Manager/1.1
+ * @param packet    Packet received from server as bytes array.
+ * @param version   AMIVer struct will be set when packet parsed
+ * @return RV_SUCCESS or RV_FAIL
+ */
 int amiparse_prompt (const char *packet, AMIVer *version);
 
+/**
+ * Detect if packet is an AMI packet. AMI packets are terminated
+ * by "\r\n\r\n" bytes sequence.
+ * @param packet    Packet received from server as bytes array.
+ * @param size      Bytes array size.
+ * @return RV_SUCCESS or RV_FAIL
+ */
 int amiparse_stanza (const char *packet, int size);
 
+/**
+ * Get sub string from given string.
+ * @param s       Source string
+ * @param len     Length of string to extract
+ * @param offset  Offset
+ * @return pointer to extracted string.
+ */
 char *substr(const char* s, size_t len, size_t offset);
 
+/**
+ * Parse AMI packet to AMIPacket structure.
+ * @param pack_str  Bytes array received from server.
+ * @return AMIPacket pointer or NULL if AMI packet failed to parse.
+ */
 AMIPacket *amiparse_pack (const char *pack_str);
 
+/**
+ * Header name representation for given type.
+ * @param type      AMI header type.
+ * @return Header name as string. Pointer to char array.
+ */
 const char *header_name(enum header_type type);
 
 #endif
