@@ -119,3 +119,5 @@ src/.deps/
 *.gcda
 *.gcno
 
+example/ami_example
+
