@@ -47,6 +47,9 @@
 /*! Set AMI packet type. */
 #define amipack_type(pack, ptype) (pack)->type = ptype
 
+/*! Number of headers in packet. */
+#define amipack_size(pack) (pack)->size
+
 /*!
  * String structure for libamip library.
  * Stores char array and its length.
