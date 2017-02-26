@@ -12,7 +12,6 @@ dnl implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 AC_PREREQ([2.69])
 AC_INIT([libamip], [1.0.0], [stas.kobzar@modulis.ca])
 AM_INIT_AUTOMAKE([foreign parallel-tests color-tests -Wall -Werror])
-AC_PROG_CC_C99
 AC_PROG_RANLIB
 AC_CONFIG_SRCDIR([src/amip.h])
 AC_CONFIG_HEADERS([config.h])
@@ -21,6 +20,7 @@ AM_EXTRA_RECURSIVE_TARGETS([valgrind])
 
 # Checks for programs.
 AC_PROG_CC
+AC_PROG_CC_STDC
 
 # Checks for libraries.
 
