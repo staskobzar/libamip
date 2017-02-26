@@ -1,6 +1,8 @@
 SUBDIRS = doc src test
 CTAGSFLAGS= -R src
 
+test: check
+
 if WITH_COVERAGE
 COV_INFO_FILE = $(top_builddir)/coverage.info
 COV_DIR = $(top_builddir)/coverage
