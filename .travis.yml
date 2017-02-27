@@ -5,6 +5,7 @@ os:
   - linux
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y libcmocka0
+  - sudo apt-get install cmake -y
+  - ./.travis-install-cmocka.sh
 
 script: ./bootstrap && ./configure && make && make check
