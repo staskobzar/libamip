@@ -10,7 +10,7 @@ dnl WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 dnl implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 AC_PREREQ([2.69])
-AC_INIT([libamip], [1.0.0], [stas.kobzar@modulis.ca])
+AC_INIT([libamip], [1.0.1], [stas.kobzar@modulis.ca])
 AM_INIT_AUTOMAKE([foreign parallel-tests color-tests -Wall -Werror])
 AC_PROG_RANLIB
 AC_CONFIG_SRCDIR([src/amip.h])
