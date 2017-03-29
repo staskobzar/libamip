@@ -40,9 +40,9 @@
 
 /*!
  * Return length of the packet as string representation.
- * All headers length + CRLF stanza (2 bytes) + \0 (1 byte)
+ * All headers length + CRLF stanza (2 bytes)
  */
-#define amipack_length(pack) (pack)->length + 3
+#define amipack_length(pack) (pack)->length + 2
 
 /*! Set AMI packet type. */
 #define amipack_type(pack, ptype) (pack)->type = ptype

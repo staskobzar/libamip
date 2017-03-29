@@ -347,7 +347,6 @@ struct str *amipack_to_str( AMIPacket *pack)
 
   *str_pack++ = '\r';  size++;
   *str_pack++ = '\n';  size++;
-  *str_pack++ = '\0';  size++;
   // rewind str_pack
   str_pack = str_pack - size;
 
@@ -385,11 +384,11 @@ int amiparse_stanza (const char *packet, int size)
 {
   if (size < 5) return RV_FAIL;
 
-  // CRLF CRLF \000 - total 5 char
-  if ( packet[size - 5] == '\r' &&
-       packet[size - 4] == '\n' &&
-       packet[size - 3] == '\r' &&
-       packet[size - 2] == '\n'
+  // CRLF CRLF - total 4 char
+  if ( packet[size - 4] == '\r' &&
+       packet[size - 3] == '\n' &&
+       packet[size - 2] == '\r' &&
+       packet[size - 1] == '\n'
       )
     return RV_SUCCESS;
   else

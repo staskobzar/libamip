@@ -1,13 +1,13 @@
-dnl                           -*- Autoconf -*-
-dnl Process this file with autoconf to produce a configure script.
-dnl
-dnl This file is free software; as a special exception the author gives
-dnl unlimited permission to copy and/or distribute it, with or without
-dnl modifications, as long as this notice is preserved.
-dnl
-dnl This program is distributed in the hope that it will be useful, but
-dnl WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
-dnl implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#                           -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+#
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 AC_PREREQ([2.69])
 AC_INIT([libamip], [1.0.1], [stas.kobzar@modulis.ca])
@@ -80,5 +80,8 @@ AC_CONFIG_FILES([Makefile
                  doc/Doxyfile
                  src/Makefile
                  test/Makefile])
+
+AC_REQUIRE_AUX_FILE([tap-driver.sh])
+AC_PROG_AWK
 
 AC_OUTPUT
