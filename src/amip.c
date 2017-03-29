@@ -382,7 +382,7 @@ struct str *amiheader_value_by_hdr_name(AMIPacket *pack,
 
 int amiparse_stanza (const char *packet, int size)
 {
-  if (size < 5) return RV_FAIL;
+  if (size < 4) return RV_FAIL;
 
   // CRLF CRLF - total 4 char
   if ( packet[size - 4] == '\r' &&

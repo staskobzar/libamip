@@ -1,4 +1,4 @@
-LOG_DRIVER = env AM_TAP_AWK='$(AWK)' CMOCKA_MESSAGE_OUTPUT=tap $(SHELL) \
+LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
                   $(top_srcdir)/tap-driver.sh
 
 if HAVE_CMOCKA

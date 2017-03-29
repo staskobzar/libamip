@@ -280,5 +280,8 @@ int main(void)
     cmocka_unit_test_setup_teardown (pack_find_headers, setup_pack, teardown_pack),
     cmocka_unit_test_setup_teardown (pack_find_header_by_name, setup_pack, teardown_pack),
   };
+
+  cmocka_set_message_output(CM_OUTPUT_TAP);
+
   return cmocka_run_group_tests_name("Create AMI package tests.", tests, NULL, NULL);
 }
