@@ -493,7 +493,7 @@ int main(void)
     cmocka_unit_test (parse_pack_command_output_v2),
   };
 
-  cmocka_set_message_output(CM_OUTPUT_TAP);
+  //cmocka_set_message_output(CM_OUTPUT_TAP);
 
   return cmocka_run_group_tests_name("Parse AMI package tests.", tests, NULL, NULL);
 }
