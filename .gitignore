@@ -69,6 +69,7 @@ Makefile
 /config.guess
 /config.h.in
 /config.sub
+/config.status
 /configure
 /configure.scan
 /depcomp
