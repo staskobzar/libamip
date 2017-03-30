@@ -61,7 +61,7 @@ struct str {
 
 /*! AMI packet types. */
 enum pack_type {
-  AMI_UNKNOWN, AMI_ACTION, AMI_EVENT, AMI_RESPONSE
+  AMI_UNKNOWN, AMI_PROMPT, AMI_ACTION, AMI_EVENT, AMI_RESPONSE
 };
 
 /*! AMI headers types. Extracted from Asterisk source. */
@@ -370,6 +370,13 @@ char *substr(const char* s, size_t len, size_t offset);
  * @return AMIPacket pointer or NULL if AMI packet failed to parse.
  */
 AMIPacket *amiparse_pack (const char *pack_str);
+
+/**
+ * AMI packet type name
+ * @param type      AMI packet type.
+ * @return AMI packet type name as string. Pointer to char array.
+ */
+const char *pack_type_str(enum pack_type type);
 
 /**
  * Header name representation for given type.

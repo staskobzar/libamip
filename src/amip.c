@@ -414,8 +414,18 @@ char *substr (  const char* s,
   return res;
 }
 
+const char *pack_type_str(enum pack_type type)
+{
+  if (type > 0 && type <= (sizeof(pack_type_name)/sizeof(char*))) {
+    return pack_type_name[type];
+  } else {
+    return pack_type_name[AMI_UNKNOWN];
+  }
+}
+
 const char *header_name(enum header_type type)
 {
-  if(!valid_hdr_type(type)) return NULL;
+  if(!valid_hdr_type(type)) return header_type_name[HDR_UNKNOWN];
   return header_type_name[type];
 }
+
