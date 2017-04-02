@@ -416,7 +416,8 @@ AMIPacket *amiparse_pack (const char *pack_str)
   <key> VOICEMAILBOX      { SET_HEADER(VoiceMailbox); }
   <key> WAITING           { SET_HEADER(Waiting); }
   <key> [^: ]+ {
-              len = cur - tok;
+              len = cur - tok - 1;
+              tok++;
               hdr_type = HDR_UNKNOWN;
               hdr_name = substr (tok, len, 0);
               goto yyc_key;

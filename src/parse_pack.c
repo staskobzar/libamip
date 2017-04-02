@@ -113,7 +113,7 @@ yy4:
 yy5:
 	++cur;
 yy6:
-#line 443 "parse_pack.re"
+#line 444 "parse_pack.re"
 	{ goto yyc_command; }
 #line 119 "parse_pack.c"
 yy7:
@@ -359,7 +359,7 @@ yy42:
 	default:	goto yy13;
 	}
 yy43:
-#line 442 "parse_pack.re"
+#line 443 "parse_pack.re"
 	{ tok = cur; goto yyc_command; }
 #line 365 "parse_pack.c"
 yy44:
@@ -444,7 +444,7 @@ yy58:
 	}
 yy60:
 	++cur;
-#line 441 "parse_pack.re"
+#line 442 "parse_pack.re"
 	{ CMD_HEADER(8, Message); }
 #line 450 "parse_pack.c"
 yy62:
@@ -463,7 +463,7 @@ yy64:
 	}
 yy65:
 	++cur;
-#line 440 "parse_pack.re"
+#line 441 "parse_pack.re"
 	{ CMD_HEADER(9, ActionID); }
 #line 469 "parse_pack.c"
 yy67:
@@ -482,7 +482,7 @@ yy69:
 	}
 yy70:
 	++cur;
-#line 439 "parse_pack.re"
+#line 440 "parse_pack.re"
 	{ CMD_HEADER(10, Privilege); }
 #line 488 "parse_pack.c"
 yy72:
@@ -531,7 +531,7 @@ yy78:
 	}
 yy79:
 	++cur;
-#line 444 "parse_pack.re"
+#line 445 "parse_pack.re"
 	{
               len = cur - tok - 19; // output minus command end tag
               char *val = substr(tok, len, 0);
@@ -603,12 +603,13 @@ yy84:
 yy85:
 #line 418 "parse_pack.re"
 	{
-              len = cur - tok;
+              len = cur - tok - 1;
+              tok++;
               hdr_type = HDR_UNKNOWN;
               hdr_name = substr (tok, len, 0);
               goto yyc_key;
             }
-#line 612 "parse_pack.c"
+#line 613 "parse_pack.c"
 yy86:
 	yych = *++cur;
 	switch (yych) {
@@ -623,7 +624,7 @@ yy87:
               amipack_destroy (pack);
               return NULL;
             }
-#line 627 "parse_pack.c"
+#line 628 "parse_pack.c"
 yy89:
 	yyaccept = 0;
 	marker = ++cur;
@@ -636,7 +637,7 @@ yy89:
 yy91:
 #line 239 "parse_pack.re"
 	{ tok = cur; goto yyc_value; }
-#line 640 "parse_pack.c"
+#line 641 "parse_pack.c"
 yy92:
 	yych = *++cur;
 	switch (yych) {
@@ -1445,7 +1446,7 @@ yy182:
 yy183:
 #line 281 "parse_pack.re"
 	{ SET_HEADER(ACL); }
-#line 1449 "parse_pack.c"
+#line 1450 "parse_pack.c"
 yy184:
 	yych = *++cur;
 	switch (yych) {
@@ -1713,7 +1714,7 @@ yy220:
 yy221:
 #line 349 "parse_pack.re"
 	{ SET_HEADER(Key); }
-#line 1717 "parse_pack.c"
+#line 1718 "parse_pack.c"
 yy222:
 	yych = *++cur;
 	switch (yych) {
@@ -1787,7 +1788,7 @@ yy231:
 yy232:
 #line 363 "parse_pack.re"
 	{ SET_HEADER(Mix); }
-#line 1791 "parse_pack.c"
+#line 1792 "parse_pack.c"
 yy233:
 	yych = *++cur;
 	switch (yych) {
@@ -2015,7 +2016,7 @@ yy261:
 yy262:
 #line 413 "parse_pack.re"
 	{ SET_HEADER(Val); }
-#line 2019 "parse_pack.c"
+#line 2020 "parse_pack.c"
 yy263:
 	yych = *++cur;
 	switch (yych) {
@@ -2047,7 +2048,7 @@ yy266:
 yy267:
 #line 237 "parse_pack.re"
 	{ goto done; }
-#line 2051 "parse_pack.c"
+#line 2052 "parse_pack.c"
 yy268:
 	yych = *++cur;
 	switch (yych) {
@@ -2067,7 +2068,7 @@ yy269:
               }
               goto yyc_key;
             }
-#line 2071 "parse_pack.c"
+#line 2072 "parse_pack.c"
 yy271:
 	yych = *++cur;
 	switch (yych) {
@@ -2231,7 +2232,7 @@ yy292:
 yy293:
 #line 320 "parse_pack.re"
 	{ SET_HEADER(Data); }
-#line 2235 "parse_pack.c"
+#line 2236 "parse_pack.c"
 yy294:
 	yych = *++cur;
 	switch (yych) {
@@ -2337,7 +2338,7 @@ yy307:
 yy308:
 #line 343 "parse_pack.re"
 	{ SET_HEADER(File); }
-#line 2341 "parse_pack.c"
+#line 2342 "parse_pack.c"
 yy309:
 	yych = *++cur;
 	switch (yych) {
@@ -2355,7 +2356,7 @@ yy310:
 yy311:
 #line 346 "parse_pack.re"
 	{ SET_HEADER(From); }
-#line 2359 "parse_pack.c"
+#line 2360 "parse_pack.c"
 yy312:
 	++cur;
 	switch ((yych = *cur)) {
@@ -2366,7 +2367,7 @@ yy312:
 yy313:
 #line 347 "parse_pack.re"
 	{ SET_HEADER(Hint); }
-#line 2370 "parse_pack.c"
+#line 2371 "parse_pack.c"
 yy314:
 	yych = *++cur;
 	switch (yych) {
@@ -2395,7 +2396,7 @@ yy316:
 yy317:
 #line 353 "parse_pack.re"
 	{ SET_HEADER(Link); }
-#line 2399 "parse_pack.c"
+#line 2400 "parse_pack.c"
 yy318:
 	yych = *++cur;
 	switch (yych) {
@@ -2536,7 +2537,7 @@ yy336:
 yy337:
 #line 375 "parse_pack.re"
 	{ SET_HEADER(Peer); }
-#line 2540 "parse_pack.c"
+#line 2541 "parse_pack.c"
 yy338:
 	yych = *++cur;
 	switch (yych) {
@@ -2709,7 +2710,7 @@ yy360:
 yy361:
 #line 404 "parse_pack.re"
 	{ SET_HEADER(Time); }
-#line 2713 "parse_pack.c"
+#line 2714 "parse_pack.c"
 yy362:
 	yych = *++cur;
 	switch (yych) {
@@ -2738,7 +2739,7 @@ yy364:
 yy365:
 #line 410 "parse_pack.re"
 	{ SET_HEADER(User); }
-#line 2742 "parse_pack.c"
+#line 2743 "parse_pack.c"
 yy366:
 	yych = *++cur;
 	switch (yych) {
@@ -2780,7 +2781,7 @@ yy370:
               }
               goto done;
             }
-#line 2784 "parse_pack.c"
+#line 2785 "parse_pack.c"
 yy372:
 	yych = *++cur;
 	switch (yych) {
@@ -2812,7 +2813,7 @@ yy375:
 yy376:
 #line 286 "parse_pack.re"
 	{ SET_HEADER(Agent); }
-#line 2816 "parse_pack.c"
+#line 2817 "parse_pack.c"
 yy377:
 	yych = *++cur;
 	switch (yych) {
@@ -2851,7 +2852,7 @@ yy381:
 yy382:
 #line 291 "parse_pack.re"
 	{ SET_HEADER(Async); }
-#line 2855 "parse_pack.c"
+#line 2856 "parse_pack.c"
 yy383:
 	yych = *++cur;
 	switch (yych) {
@@ -2905,7 +2906,7 @@ yy389:
 yy390:
 #line 303 "parse_pack.re"
 	{ SET_HEADER(Cause); }
-#line 2909 "parse_pack.c"
+#line 2910 "parse_pack.c"
 yy391:
 	yych = *++cur;
 	switch (yych) {
@@ -2967,7 +2968,7 @@ yy398:
 yy399:
 #line 319 "parse_pack.re"
 	{ SET_HEADER(Count); }
-#line 2971 "parse_pack.c"
+#line 2972 "parse_pack.c"
 yy400:
 	yych = *++cur;
 	switch (yych) {
@@ -3055,7 +3056,7 @@ yy411:
               amipack_type (pack, AMI_EVENT);
               SET_HEADER(Event);
             }
-#line 3059 "parse_pack.c"
+#line 3060 "parse_pack.c"
 yy412:
 	++cur;
 	switch ((yych = *cur)) {
@@ -3068,7 +3069,7 @@ yy412:
 yy413:
 #line 337 "parse_pack.re"
 	{ SET_HEADER(Exten); }
-#line 3072 "parse_pack.c"
+#line 3073 "parse_pack.c"
 yy414:
 	yych = *++cur;
 	switch (yych) {
@@ -3314,7 +3315,7 @@ yy447:
 yy448:
 #line 382 "parse_pack.re"
 	{ SET_HEADER(Queue); }
-#line 3318 "parse_pack.c"
+#line 3319 "parse_pack.c"
 yy449:
 	yych = *++cur;
 	switch (yych) {
@@ -3437,7 +3438,7 @@ yy465:
 yy466:
 #line 401 "parse_pack.re"
 	{ SET_HEADER(State); }
-#line 3441 "parse_pack.c"
+#line 3442 "parse_pack.c"
 yy467:
 	yych = *++cur;
 	switch (yych) {
@@ -3497,7 +3498,7 @@ yy474:
 yy475:
 #line 414 "parse_pack.re"
 	{ SET_HEADER(Value); }
-#line 3501 "parse_pack.c"
+#line 3502 "parse_pack.c"
 yy476:
 	yych = *++cur;
 	switch (yych) {
@@ -3541,7 +3542,7 @@ yy481:
               amipack_type (pack, AMI_ACTION);
               SET_HEADER(Action);
             }
-#line 3545 "parse_pack.c"
+#line 3546 "parse_pack.c"
 yy482:
 	yych = *++cur;
 	switch (yych) {
@@ -3573,7 +3574,7 @@ yy485:
 yy486:
 #line 289 "parse_pack.re"
 	{ SET_HEADER(Append); }
-#line 3577 "parse_pack.c"
+#line 3578 "parse_pack.c"
 yy487:
 	yych = *++cur;
 	switch (yych) {
@@ -3670,7 +3671,7 @@ yy499:
 yy500:
 #line 314 "parse_pack.re"
 	{ SET_HEADER(Codecs); }
-#line 3674 "parse_pack.c"
+#line 3675 "parse_pack.c"
 yy501:
 	yych = *++cur;
 	switch (yych) {
@@ -3746,7 +3747,7 @@ yy510:
 yy511:
 #line 331 "parse_pack.re"
 	{ SET_HEADER(Domain); }
-#line 3750 "parse_pack.c"
+#line 3751 "parse_pack.c"
 yy512:
 	yych = *++cur;
 	switch (yych) {
@@ -3785,7 +3786,7 @@ yy516:
 yy517:
 #line 336 "parse_pack.re"
 	{ SET_HEADER(EventsHdr); }
-#line 3789 "parse_pack.c"
+#line 3790 "parse_pack.c"
 yy518:
 	yych = *++cur;
 	switch (yych) {
@@ -3819,7 +3820,7 @@ yy521:
 yy522:
 #line 342 "parse_pack.re"
 	{ SET_HEADER(Family); }
-#line 3823 "parse_pack.c"
+#line 3824 "parse_pack.c"
 yy523:
 	yych = *++cur;
 	switch (yych) {
@@ -3837,7 +3838,7 @@ yy524:
 yy525:
 #line 345 "parse_pack.re"
 	{ SET_HEADER(Format); }
-#line 3841 "parse_pack.c"
+#line 3842 "parse_pack.c"
 yy526:
 	yych = *++cur;
 	switch (yych) {
@@ -3995,7 +3996,7 @@ yy547:
 yy548:
 #line 372 "parse_pack.re"
 	{ SET_HEADER(Output); }
-#line 3999 "parse_pack.c"
+#line 4000 "parse_pack.c"
 yy549:
 	yych = *++cur;
 	switch (yych) {
@@ -4013,7 +4014,7 @@ yy550:
 yy551:
 #line 374 "parse_pack.re"
 	{ SET_HEADER(Paused); }
-#line 4017 "parse_pack.c"
+#line 4018 "parse_pack.c"
 yy552:
 	yych = *++cur;
 	switch (yych) {
@@ -4066,7 +4067,7 @@ yy558:
 yy559:
 #line 383 "parse_pack.re"
 	{ SET_HEADER(Reason); }
-#line 4070 "parse_pack.c"
+#line 4071 "parse_pack.c"
 yy560:
 	yych = *++cur;
 	switch (yych) {
@@ -4121,7 +4122,7 @@ yy566:
 yy567:
 #line 390 "parse_pack.re"
 	{ SET_HEADER(Secret); }
-#line 4125 "parse_pack.c"
+#line 4126 "parse_pack.c"
 yy568:
 	yych = *++cur;
 	switch (yych) {
@@ -4167,7 +4168,7 @@ yy573:
 yy574:
 #line 398 "parse_pack.re"
 	{ SET_HEADER(Source); }
-#line 4171 "parse_pack.c"
+#line 4172 "parse_pack.c"
 yy575:
 	yych = *++cur;
 	switch (yych) {
@@ -4192,7 +4193,7 @@ yy577:
 yy578:
 #line 402 "parse_pack.re"
 	{ SET_HEADER(StatusHdr); }
-#line 4196 "parse_pack.c"
+#line 4197 "parse_pack.c"
 yy579:
 	yych = *++cur;
 	switch (yych) {
@@ -4268,7 +4269,7 @@ yy588:
 yy589:
 #line 279 "parse_pack.re"
 	{ SET_HEADER(Account); }
-#line 4272 "parse_pack.c"
+#line 4273 "parse_pack.c"
 yy590:
 	yych = *++cur;
 	switch (yych) {
@@ -4287,7 +4288,7 @@ yy591:
 yy592:
 #line 283 "parse_pack.re"
 	{ SET_HEADER(Address); }
-#line 4291 "parse_pack.c"
+#line 4292 "parse_pack.c"
 yy593:
 	yych = *++cur;
 	switch (yych) {
@@ -4381,7 +4382,7 @@ yy604:
 yy605:
 #line 305 "parse_pack.re"
 	{ SET_HEADER(Channel); }
-#line 4385 "parse_pack.c"
+#line 4386 "parse_pack.c"
 yy606:
 	yych = *++cur;
 	switch (yych) {
@@ -4413,7 +4414,7 @@ yy609:
 yy610:
 #line 315 "parse_pack.re"
 	{ SET_HEADER(CommandHdr); }
-#line 4417 "parse_pack.c"
+#line 4418 "parse_pack.c"
 yy611:
 	yych = *++cur;
 	switch (yych) {
@@ -4431,7 +4432,7 @@ yy612:
 yy613:
 #line 318 "parse_pack.re"
 	{ SET_HEADER(Context); }
-#line 4435 "parse_pack.c"
+#line 4436 "parse_pack.c"
 yy614:
 	yych = *++cur;
 	switch (yych) {
@@ -4497,7 +4498,7 @@ yy622:
 yy623:
 #line 333 "parse_pack.re"
 	{ SET_HEADER(Dynamic); }
-#line 4501 "parse_pack.c"
+#line 4502 "parse_pack.c"
 yy624:
 	++cur;
 	switch ((yych = *cur)) {
@@ -4508,7 +4509,7 @@ yy624:
 yy625:
 #line 334 "parse_pack.re"
 	{ SET_HEADER(Endtime); }
-#line 4512 "parse_pack.c"
+#line 4513 "parse_pack.c"
 yy626:
 	yych = *++cur;
 	switch (yych) {
@@ -4624,7 +4625,7 @@ yy641:
 yy642:
 #line 359 "parse_pack.re"
 	{ SET_HEADER(Mailbox); }
-#line 4628 "parse_pack.c"
+#line 4629 "parse_pack.c"
 yy643:
 	yych = *++cur;
 	switch (yych) {
@@ -4649,7 +4650,7 @@ yy645:
 yy646:
 #line 362 "parse_pack.re"
 	{ SET_HEADER(Message); }
-#line 4653 "parse_pack.c"
+#line 4654 "parse_pack.c"
 yy647:
 	yych = *++cur;
 	switch (yych) {
@@ -4674,7 +4675,7 @@ yy649:
 yy650:
 #line 366 "parse_pack.re"
 	{ SET_HEADER(Newname); }
-#line 4678 "parse_pack.c"
+#line 4679 "parse_pack.c"
 yy651:
 	yych = *++cur;
 	switch (yych) {
@@ -4706,7 +4707,7 @@ yy654:
 yy655:
 #line 370 "parse_pack.re"
 	{ SET_HEADER(OldName); }
-#line 4710 "parse_pack.c"
+#line 4711 "parse_pack.c"
 yy656:
 	yych = *++cur;
 	switch (yych) {
@@ -4738,7 +4739,7 @@ yy659:
 yy660:
 #line 377 "parse_pack.re"
 	{ SET_HEADER(Penalty); }
-#line 4742 "parse_pack.c"
+#line 4743 "parse_pack.c"
 yy661:
 	yych = *++cur;
 	switch (yych) {
@@ -4805,7 +4806,7 @@ yy669:
 yy670:
 #line 388 "parse_pack.re"
 	{ SET_HEADER(Restart); }
-#line 4809 "parse_pack.c"
+#line 4810 "parse_pack.c"
 yy671:
 	++cur;
 	switch ((yych = *cur)) {
@@ -4816,7 +4817,7 @@ yy671:
 yy672:
 #line 389 "parse_pack.re"
 	{ SET_HEADER(Seconds); }
-#line 4820 "parse_pack.c"
+#line 4821 "parse_pack.c"
 yy673:
 	yych = *++cur;
 	switch (yych) {
@@ -4890,7 +4891,7 @@ yy682:
 yy683:
 #line 405 "parse_pack.re"
 	{ SET_HEADER(Timeout); }
-#line 4894 "parse_pack.c"
+#line 4895 "parse_pack.c"
 yy684:
 	yych = *++cur;
 	switch (yych) {
@@ -4943,7 +4944,7 @@ yy690:
 yy691:
 #line 417 "parse_pack.re"
 	{ SET_HEADER(Waiting); }
-#line 4947 "parse_pack.c"
+#line 4948 "parse_pack.c"
 yy692:
 	yych = *++cur;
 	switch (yych) {
@@ -4961,7 +4962,7 @@ yy693:
 yy694:
 #line 282 "parse_pack.re"
 	{ SET_HEADER(ActionID); }
-#line 4965 "parse_pack.c"
+#line 4966 "parse_pack.c"
 yy695:
 	yych = *++cur;
 	switch (yych) {
@@ -4981,7 +4982,7 @@ yy696:
 yy697:
 #line 287 "parse_pack.re"
 	{ SET_HEADER(AMAflags); }
-#line 4985 "parse_pack.c"
+#line 4986 "parse_pack.c"
 yy698:
 	yych = *++cur;
 	switch (yych) {
@@ -5006,7 +5007,7 @@ yy700:
 yy701:
 #line 292 "parse_pack.re"
 	{ SET_HEADER(AuthType); }
-#line 5010 "parse_pack.c"
+#line 5011 "parse_pack.c"
 yy702:
 	yych = *++cur;
 	switch (yych) {
@@ -5042,7 +5043,7 @@ yy705:
 yy706:
 #line 296 "parse_pack.re"
 	{ SET_HEADER(CallerID); }
-#line 5046 "parse_pack.c"
+#line 5047 "parse_pack.c"
 yy707:
 	yych = *++cur;
 	switch (yych) {
@@ -5074,7 +5075,7 @@ yy710:
 yy711:
 #line 306 "parse_pack.re"
 	{ SET_HEADER(Channel1); }
-#line 5078 "parse_pack.c"
+#line 5079 "parse_pack.c"
 yy712:
 	++cur;
 	switch ((yych = *cur)) {
@@ -5085,7 +5086,7 @@ yy712:
 yy713:
 #line 307 "parse_pack.re"
 	{ SET_HEADER(Channel2); }
-#line 5089 "parse_pack.c"
+#line 5090 "parse_pack.c"
 yy714:
 	yych = *++cur;
 	switch (yych) {
@@ -5189,7 +5190,7 @@ yy727:
 yy728:
 #line 332 "parse_pack.re"
 	{ SET_HEADER(Duration); }
-#line 5193 "parse_pack.c"
+#line 5194 "parse_pack.c"
 yy729:
 	yych = *++cur;
 	switch (yych) {
@@ -5235,7 +5236,7 @@ yy734:
 yy735:
 #line 344 "parse_pack.re"
 	{ SET_HEADER(FileName); }
-#line 5239 "parse_pack.c"
+#line 5240 "parse_pack.c"
 yy736:
 	yych = *++cur;
 	switch (yych) {
@@ -5260,7 +5261,7 @@ yy738:
 yy739:
 #line 351 "parse_pack.re"
 	{ SET_HEADER(LastCall); }
-#line 5264 "parse_pack.c"
+#line 5265 "parse_pack.c"
 yy740:
 	++cur;
 	switch ((yych = *cur)) {
@@ -5271,7 +5272,7 @@ yy740:
 yy741:
 #line 352 "parse_pack.re"
 	{ SET_HEADER(LastData); }
-#line 5275 "parse_pack.c"
+#line 5276 "parse_pack.c"
 yy742:
 	yych = *++cur;
 	switch (yych) {
@@ -5296,7 +5297,7 @@ yy744:
 yy745:
 #line 356 "parse_pack.re"
 	{ SET_HEADER(Location); }
-#line 5300 "parse_pack.c"
+#line 5301 "parse_pack.c"
 yy746:
 	yych = *++cur;
 	switch (yych) {
@@ -5398,7 +5399,7 @@ yy759:
 yy760:
 #line 379 "parse_pack.re"
 	{ SET_HEADER(Position); }
-#line 5402 "parse_pack.c"
+#line 5403 "parse_pack.c"
 yy761:
 	++cur;
 	switch ((yych = *cur)) {
@@ -5409,7 +5410,7 @@ yy761:
 yy762:
 #line 380 "parse_pack.re"
 	{ SET_HEADER(Priority); }
-#line 5413 "parse_pack.c"
+#line 5414 "parse_pack.c"
 yy763:
 	yych = *++cur;
 	switch (yych) {
@@ -5454,7 +5455,7 @@ yy768:
               amipack_type (pack, AMI_RESPONSE);
               SET_HEADER(Response);
             }
-#line 5458 "parse_pack.c"
+#line 5459 "parse_pack.c"
 yy769:
 	yych = *++cur;
 	switch (yych) {
@@ -5472,7 +5473,7 @@ yy770:
 yy771:
 #line 392 "parse_pack.re"
 	{ SET_HEADER(ShutdownHdr); }
-#line 5476 "parse_pack.c"
+#line 5477 "parse_pack.c"
 yy772:
 	yych = *++cur;
 	switch (yych) {
@@ -5527,7 +5528,7 @@ yy778:
 yy779:
 #line 403 "parse_pack.re"
 	{ SET_HEADER(SubEvent); }
-#line 5531 "parse_pack.c"
+#line 5532 "parse_pack.c"
 yy780:
 	yych = *++cur;
 	switch (yych) {
@@ -5547,7 +5548,7 @@ yy781:
 yy782:
 #line 407 "parse_pack.re"
 	{ SET_HEADER(Uniqueid); }
-#line 5551 "parse_pack.c"
+#line 5552 "parse_pack.c"
 yy783:
 	yych = *++cur;
 	switch (yych) {
@@ -5565,7 +5566,7 @@ yy784:
 yy785:
 #line 412 "parse_pack.re"
 	{ SET_HEADER(Username); }
-#line 5569 "parse_pack.c"
+#line 5570 "parse_pack.c"
 yy786:
 	++cur;
 	switch ((yych = *cur)) {
@@ -5576,7 +5577,7 @@ yy786:
 yy787:
 #line 415 "parse_pack.re"
 	{ SET_HEADER(Variable); }
-#line 5580 "parse_pack.c"
+#line 5581 "parse_pack.c"
 yy788:
 	yych = *++cur;
 	switch (yych) {
@@ -5650,7 +5651,7 @@ yy797:
 yy798:
 #line 297 "parse_pack.re"
 	{ SET_HEADER(CallerID1); }
-#line 5654 "parse_pack.c"
+#line 5655 "parse_pack.c"
 yy799:
 	++cur;
 	switch ((yych = *cur)) {
@@ -5661,7 +5662,7 @@ yy799:
 yy800:
 #line 298 "parse_pack.re"
 	{ SET_HEADER(CallerID2); }
-#line 5665 "parse_pack.c"
+#line 5666 "parse_pack.c"
 yy801:
 	yych = *++cur;
 	switch (yych) {
@@ -5681,7 +5682,7 @@ yy802:
 yy803:
 #line 301 "parse_pack.re"
 	{ SET_HEADER(Callgroup); }
-#line 5685 "parse_pack.c"
+#line 5686 "parse_pack.c"
 yy804:
 	yych = *++cur;
 	switch (yych) {
@@ -5699,7 +5700,7 @@ yy805:
 yy806:
 #line 304 "parse_pack.re"
 	{ SET_HEADER(Cause_txt); }
-#line 5703 "parse_pack.c"
+#line 5704 "parse_pack.c"
 yy807:
 	yych = *++cur;
 	switch (yych) {
@@ -5794,7 +5795,7 @@ yy819:
 yy820:
 #line 329 "parse_pack.re"
 	{ SET_HEADER(Direction); }
-#line 5798 "parse_pack.c"
+#line 5799 "parse_pack.c"
 yy821:
 	yych = *++cur;
 	switch (yych) {
@@ -5812,7 +5813,7 @@ yy822:
 yy823:
 #line 335 "parse_pack.re"
 	{ SET_HEADER(EventList); }
-#line 5816 "parse_pack.c"
+#line 5817 "parse_pack.c"
 yy824:
 	++cur;
 	switch ((yych = *cur)) {
@@ -5823,7 +5824,7 @@ yy824:
 yy825:
 #line 338 "parse_pack.re"
 	{ SET_HEADER(Extension); }
-#line 5827 "parse_pack.c"
+#line 5828 "parse_pack.c"
 yy826:
 	yych = *++cur;
 	switch (yych) {
@@ -5869,7 +5870,7 @@ yy831:
 yy832:
 #line 354 "parse_pack.re"
 	{ SET_HEADER(ListItems); }
-#line 5873 "parse_pack.c"
+#line 5874 "parse_pack.c"
 yy833:
 	yych = *++cur;
 	switch (yych) {
@@ -5887,7 +5888,7 @@ yy834:
 yy835:
 #line 357 "parse_pack.re"
 	{ SET_HEADER(Loginchan); }
-#line 5891 "parse_pack.c"
+#line 5892 "parse_pack.c"
 yy836:
 	++cur;
 	switch ((yych = *cur)) {
@@ -5898,7 +5899,7 @@ yy836:
 yy837:
 #line 358 "parse_pack.re"
 	{ SET_HEADER(Logintime); }
-#line 5902 "parse_pack.c"
+#line 5903 "parse_pack.c"
 yy838:
 	yych = *++cur;
 	switch (yych) {
@@ -5986,7 +5987,7 @@ yy849:
 yy850:
 #line 381 "parse_pack.re"
 	{ SET_HEADER(Privilege); }
-#line 5990 "parse_pack.c"
+#line 5991 "parse_pack.c"
 yy851:
 	++cur;
 	switch ((yych = *cur)) {
@@ -5997,7 +5998,7 @@ yy851:
 yy852:
 #line 384 "parse_pack.re"
 	{ SET_HEADER(RegExpire); }
-#line 6001 "parse_pack.c"
+#line 6002 "parse_pack.c"
 yy853:
 	++cur;
 	switch ((yych = *cur)) {
@@ -6008,7 +6009,7 @@ yy853:
 yy854:
 #line 385 "parse_pack.re"
 	{ SET_HEADER(RegExpiry); }
-#line 6012 "parse_pack.c"
+#line 6013 "parse_pack.c"
 yy855:
 	yych = *++cur;
 	switch (yych) {
@@ -6091,7 +6092,7 @@ yy866:
 yy867:
 #line 400 "parse_pack.re"
 	{ SET_HEADER(StartTime); }
-#line 6095 "parse_pack.c"
+#line 6096 "parse_pack.c"
 yy868:
 	yych = *++cur;
 	switch (yych) {
@@ -6109,7 +6110,7 @@ yy869:
 yy870:
 #line 408 "parse_pack.re"
 	{ SET_HEADER(Uniqueid1); }
-#line 6113 "parse_pack.c"
+#line 6114 "parse_pack.c"
 yy871:
 	++cur;
 	switch ((yych = *cur)) {
@@ -6120,7 +6121,7 @@ yy871:
 yy872:
 #line 409 "parse_pack.re"
 	{ SET_HEADER(Uniqueid2); }
-#line 6124 "parse_pack.c"
+#line 6125 "parse_pack.c"
 yy873:
 	++cur;
 	switch ((yych = *cur)) {
@@ -6131,7 +6132,7 @@ yy873:
 yy874:
 #line 411 "parse_pack.re"
 	{ SET_HEADER(UserField); }
-#line 6135 "parse_pack.c"
+#line 6136 "parse_pack.c"
 yy875:
 	yych = *++cur;
 	switch (yych) {
@@ -6156,7 +6157,7 @@ yy877:
 yy878:
 #line 284 "parse_pack.re"
 	{ SET_HEADER(Address_IP); }
-#line 6160 "parse_pack.c"
+#line 6161 "parse_pack.c"
 yy879:
 	yych = *++cur;
 	switch (yych) {
@@ -6174,7 +6175,7 @@ yy880:
 yy881:
 #line 288 "parse_pack.re"
 	{ SET_HEADER(AnswerTime); }
-#line 6178 "parse_pack.c"
+#line 6179 "parse_pack.c"
 yy882:
 	yych = *++cur;
 	switch (yych) {
@@ -6206,7 +6207,7 @@ yy885:
 yy886:
 #line 295 "parse_pack.re"
 	{ SET_HEADER(Bridgetype); }
-#line 6210 "parse_pack.c"
+#line 6211 "parse_pack.c"
 yy887:
 	yych = *++cur;
 	switch (yych) {
@@ -6231,7 +6232,7 @@ yy889:
 yy890:
 #line 302 "parse_pack.re"
 	{ SET_HEADER(CallsTaken); }
-#line 6235 "parse_pack.c"
+#line 6236 "parse_pack.c"
 yy891:
 	yych = *++cur;
 	switch (yych) {
@@ -6270,7 +6271,7 @@ yy895:
 yy896:
 #line 313 "parse_pack.re"
 	{ SET_HEADER(CodecOrder); }
-#line 6274 "parse_pack.c"
+#line 6275 "parse_pack.c"
 yy897:
 	yych = *++cur;
 	switch (yych) {
@@ -6316,7 +6317,7 @@ yy902:
 yy903:
 #line 327 "parse_pack.re"
 	{ SET_HEADER(DialStatus); }
-#line 6320 "parse_pack.c"
+#line 6321 "parse_pack.c"
 yy904:
 	++cur;
 	switch ((yych = *cur)) {
@@ -6327,7 +6328,7 @@ yy904:
 yy905:
 #line 328 "parse_pack.re"
 	{ SET_HEADER(Dialstring); }
-#line 6331 "parse_pack.c"
+#line 6332 "parse_pack.c"
 yy906:
 	yych = *++cur;
 	switch (yych) {
@@ -6394,7 +6395,7 @@ yy914:
 yy915:
 #line 361 "parse_pack.re"
 	{ SET_HEADER(Membership); }
-#line 6398 "parse_pack.c"
+#line 6399 "parse_pack.c"
 yy916:
 	++cur;
 	switch ((yych = *cur)) {
@@ -6405,7 +6406,7 @@ yy916:
 yy917:
 #line 364 "parse_pack.re"
 	{ SET_HEADER(MOHSuggest); }
-#line 6409 "parse_pack.c"
+#line 6410 "parse_pack.c"
 yy918:
 	yych = *++cur;
 	switch (yych) {
@@ -6423,7 +6424,7 @@ yy919:
 yy920:
 #line 367 "parse_pack.re"
 	{ SET_HEADER(ObjectName); }
-#line 6427 "parse_pack.c"
+#line 6428 "parse_pack.c"
 yy921:
 	yych = *++cur;
 	switch (yych) {
@@ -6462,7 +6463,7 @@ yy925:
 yy926:
 #line 376 "parse_pack.re"
 	{ SET_HEADER(PeerStatusHdr); }
-#line 6466 "parse_pack.c"
+#line 6467 "parse_pack.c"
 yy927:
 	yych = *++cur;
 	switch (yych) {
@@ -6487,7 +6488,7 @@ yy929:
 yy930:
 #line 387 "parse_pack.re"
 	{ SET_HEADER(Resolution); }
-#line 6491 "parse_pack.c"
+#line 6492 "parse_pack.c"
 yy931:
 	yych = *++cur;
 	switch (yych) {
@@ -6540,7 +6541,7 @@ yy937:
 yy938:
 #line 396 "parse_pack.re"
 	{ SET_HEADER(SIPLastMsg); }
-#line 6544 "parse_pack.c"
+#line 6545 "parse_pack.c"
 yy939:
 	yych = *++cur;
 	switch (yych) {
@@ -6572,7 +6573,7 @@ yy942:
 yy943:
 #line 280 "parse_pack.re"
 	{ SET_HEADER(AccountCode); }
-#line 6576 "parse_pack.c"
+#line 6577 "parse_pack.c"
 yy944:
 	yych = *++cur;
 	switch (yych) {
@@ -6590,7 +6591,7 @@ yy945:
 yy946:
 #line 290 "parse_pack.re"
 	{ SET_HEADER(Application); }
-#line 6594 "parse_pack.c"
+#line 6595 "parse_pack.c"
 yy947:
 	yych = *++cur;
 	switch (yych) {
@@ -6608,7 +6609,7 @@ yy948:
 yy949:
 #line 294 "parse_pack.re"
 	{ SET_HEADER(Bridgestate); }
-#line 6612 "parse_pack.c"
+#line 6613 "parse_pack.c"
 yy950:
 	yych = *++cur;
 	switch (yych) {
@@ -6626,7 +6627,7 @@ yy951:
 yy952:
 #line 300 "parse_pack.re"
 	{ SET_HEADER(CallerIDNum); }
-#line 6630 "parse_pack.c"
+#line 6631 "parse_pack.c"
 yy953:
 	yych = *++cur;
 	switch (yych) {
@@ -6644,7 +6645,7 @@ yy954:
 yy955:
 #line 310 "parse_pack.re"
 	{ SET_HEADER(ChannelType); }
-#line 6648 "parse_pack.c"
+#line 6649 "parse_pack.c"
 yy956:
 	yych = *++cur;
 	switch (yych) {
@@ -6692,7 +6693,7 @@ yy961:
 yy962:
 #line 323 "parse_pack.re"
 	{ SET_HEADER(Destination); }
-#line 6696 "parse_pack.c"
+#line 6697 "parse_pack.c"
 yy963:
 	yych = *++cur;
 	switch (yych) {
@@ -6710,7 +6711,7 @@ yy964:
 yy965:
 #line 330 "parse_pack.re"
 	{ SET_HEADER(Disposition); }
-#line 6714 "parse_pack.c"
+#line 6715 "parse_pack.c"
 yy966:
 	yych = *++cur;
 	switch (yych) {
@@ -6770,7 +6771,7 @@ yy973:
 yy974:
 #line 365 "parse_pack.re"
 	{ SET_HEADER(NewMessages); }
-#line 6774 "parse_pack.c"
+#line 6775 "parse_pack.c"
 yy975:
 	yych = *++cur;
 	switch (yych) {
@@ -6788,7 +6789,7 @@ yy976:
 yy977:
 #line 369 "parse_pack.re"
 	{ SET_HEADER(OldMessages); }
-#line 6792 "parse_pack.c"
+#line 6793 "parse_pack.c"
 yy978:
 	yych = *++cur;
 	switch (yych) {
@@ -6813,7 +6814,7 @@ yy980:
 yy981:
 #line 378 "parse_pack.re"
 	{ SET_HEADER(Pickupgroup); }
-#line 6817 "parse_pack.c"
+#line 6818 "parse_pack.c"
 yy982:
 	yych = *++cur;
 	switch (yych) {
@@ -6838,7 +6839,7 @@ yy984:
 yy985:
 #line 391 "parse_pack.re"
 	{ SET_HEADER(SecretExist); }
-#line 6842 "parse_pack.c"
+#line 6843 "parse_pack.c"
 yy986:
 	yych = *++cur;
 	switch (yych) {
@@ -6877,7 +6878,7 @@ yy990:
 yy991:
 #line 399 "parse_pack.re"
 	{ SET_HEADER(SrcUniqueID); }
-#line 6881 "parse_pack.c"
+#line 6882 "parse_pack.c"
 yy992:
 	yych = *++cur;
 	switch (yych) {
@@ -6902,7 +6903,7 @@ yy994:
 yy995:
 #line 285 "parse_pack.re"
 	{ SET_HEADER(Address_Port); }
-#line 6906 "parse_pack.c"
+#line 6907 "parse_pack.c"
 yy996:
 	yych = *++cur;
 	switch (yych) {
@@ -6920,7 +6921,7 @@ yy997:
 yy998:
 #line 299 "parse_pack.re"
 	{ SET_HEADER(CallerIDName); }
-#line 6924 "parse_pack.c"
+#line 6925 "parse_pack.c"
 yy999:
 	++cur;
 	switch ((yych = *cur)) {
@@ -6933,7 +6934,7 @@ yy999:
 yy1000:
 #line 308 "parse_pack.re"
 	{ SET_HEADER(ChannelState); }
-#line 6937 "parse_pack.c"
+#line 6938 "parse_pack.c"
 yy1001:
 	yych = *++cur;
 	switch (yych) {
@@ -6987,7 +6988,7 @@ yy1007:
 yy1008:
 #line 326 "parse_pack.re"
 	{ SET_HEADER(DestUniqueID); }
-#line 6991 "parse_pack.c"
+#line 6992 "parse_pack.c"
 yy1009:
 	++cur;
 	switch ((yych = *cur)) {
@@ -6998,7 +6999,7 @@ yy1009:
 yy1010:
 #line 339 "parse_pack.re"
 	{ SET_HEADER(ExtraChannel); }
-#line 7002 "parse_pack.c"
+#line 7003 "parse_pack.c"
 yy1011:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7009,7 +7010,7 @@ yy1011:
 yy1012:
 #line 340 "parse_pack.re"
 	{ SET_HEADER(ExtraContext); }
-#line 7013 "parse_pack.c"
+#line 7014 "parse_pack.c"
 yy1013:
 	yych = *++cur;
 	switch (yych) {
@@ -7104,7 +7105,7 @@ yy1025:
 yy1026:
 #line 395 "parse_pack.re"
 	{ SET_HEADER(SIP_FromUser); }
-#line 7108 "parse_pack.c"
+#line 7109 "parse_pack.c"
 yy1027:
 	yych = *++cur;
 	switch (yych) {
@@ -7122,7 +7123,7 @@ yy1028:
 yy1029:
 #line 406 "parse_pack.re"
 	{ SET_HEADER(TransferRate); }
-#line 7126 "parse_pack.c"
+#line 7127 "parse_pack.c"
 yy1030:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7133,7 +7134,7 @@ yy1030:
 yy1031:
 #line 416 "parse_pack.re"
 	{ SET_HEADER(VoiceMailbox); }
-#line 7137 "parse_pack.c"
+#line 7138 "parse_pack.c"
 yy1032:
 	yych = *++cur;
 	switch (yych) {
@@ -7207,7 +7208,7 @@ yy1041:
 yy1042:
 #line 341 "parse_pack.re"
 	{ SET_HEADER(ExtraPriority); }
-#line 7211 "parse_pack.c"
+#line 7212 "parse_pack.c"
 yy1043:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7218,7 +7219,7 @@ yy1043:
 yy1044:
 #line 348 "parse_pack.re"
 	{ SET_HEADER(Incominglimit); }
-#line 7222 "parse_pack.c"
+#line 7223 "parse_pack.c"
 yy1045:
 	yych = *++cur;
 	switch (yych) {
@@ -7257,7 +7258,7 @@ yy1049:
 yy1050:
 #line 371 "parse_pack.re"
 	{ SET_HEADER(Outgoinglimit); }
-#line 7261 "parse_pack.c"
+#line 7262 "parse_pack.c"
 yy1051:
 	yych = *++cur;
 	switch (yych) {
@@ -7324,7 +7325,7 @@ yy1059:
 yy1060:
 #line 311 "parse_pack.re"
 	{ SET_HEADER(ChanObjectType); }
-#line 7328 "parse_pack.c"
+#line 7329 "parse_pack.c"
 yy1061:
 	yych = *++cur;
 	switch (yych) {
@@ -7386,7 +7387,7 @@ yy1068:
 yy1069:
 #line 355 "parse_pack.re"
 	{ SET_HEADER(LocalStationID); }
-#line 7390 "parse_pack.c"
+#line 7391 "parse_pack.c"
 yy1070:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7397,7 +7398,7 @@ yy1070:
 yy1071:
 #line 360 "parse_pack.re"
 	{ SET_HEADER(MD5SecretExist); }
-#line 7401 "parse_pack.c"
+#line 7402 "parse_pack.c"
 yy1072:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7408,7 +7409,7 @@ yy1072:
 yy1073:
 #line 368 "parse_pack.re"
 	{ SET_HEADER(OldAccountCode); }
-#line 7412 "parse_pack.c"
+#line 7413 "parse_pack.c"
 yy1074:
 	yych = *++cur;
 	switch (yych) {
@@ -7447,7 +7448,7 @@ yy1078:
 yy1079:
 #line 394 "parse_pack.re"
 	{ SET_HEADER(SIP_FromDomain); }
-#line 7451 "parse_pack.c"
+#line 7452 "parse_pack.c"
 yy1080:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7458,7 +7459,7 @@ yy1080:
 yy1081:
 #line 397 "parse_pack.re"
 	{ SET_HEADER(SIP_NatSupport); }
-#line 7462 "parse_pack.c"
+#line 7463 "parse_pack.c"
 yy1082:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7469,7 +7470,7 @@ yy1082:
 yy1083:
 #line 293 "parse_pack.re"
 	{ SET_HEADER(BillableSeconds); }
-#line 7473 "parse_pack.c"
+#line 7474 "parse_pack.c"
 yy1084:
 	yych = *++cur;
 	switch (yych) {
@@ -7487,7 +7488,7 @@ yy1085:
 yy1086:
 #line 312 "parse_pack.re"
 	{ SET_HEADER(CID_CallingPres); }
-#line 7491 "parse_pack.c"
+#line 7492 "parse_pack.c"
 yy1087:
 	yych = *++cur;
 	switch (yych) {
@@ -7512,7 +7513,7 @@ yy1089:
 yy1090:
 #line 321 "parse_pack.re"
 	{ SET_HEADER(Default_addr_IP); }
-#line 7516 "parse_pack.c"
+#line 7517 "parse_pack.c"
 yy1091:
 	yych = *++cur;
 	switch (yych) {
@@ -7544,7 +7545,7 @@ yy1094:
 yy1095:
 #line 350 "parse_pack.re"
 	{ SET_HEADER(LastApplication); }
-#line 7548 "parse_pack.c"
+#line 7549 "parse_pack.c"
 yy1096:
 	yych = *++cur;
 	switch (yych) {
@@ -7562,7 +7563,7 @@ yy1097:
 yy1098:
 #line 386 "parse_pack.re"
 	{ SET_HEADER(RemoteStationID); }
-#line 7566 "parse_pack.c"
+#line 7567 "parse_pack.c"
 yy1099:
 	yych = *++cur;
 	switch (yych) {
@@ -7587,7 +7588,7 @@ yy1101:
 yy1102:
 #line 309 "parse_pack.re"
 	{ SET_HEADER(ChannelStateDesc); }
-#line 7591 "parse_pack.c"
+#line 7592 "parse_pack.c"
 yy1103:
 	yych = *++cur;
 	switch (yych) {
@@ -7605,7 +7606,7 @@ yy1104:
 yy1105:
 #line 317 "parse_pack.re"
 	{ SET_HEADER(ConnectedLineNum); }
-#line 7609 "parse_pack.c"
+#line 7610 "parse_pack.c"
 yy1106:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7616,7 +7617,7 @@ yy1106:
 yy1107:
 #line 322 "parse_pack.re"
 	{ SET_HEADER(Default_Username); }
-#line 7620 "parse_pack.c"
+#line 7621 "parse_pack.c"
 yy1108:
 	yych = *++cur;
 	switch (yych) {
@@ -7641,7 +7642,7 @@ yy1110:
 yy1111:
 #line 373 "parse_pack.re"
 	{ SET_HEADER(PagesTransferred); }
-#line 7645 "parse_pack.c"
+#line 7646 "parse_pack.c"
 yy1112:
 	yych = *++cur;
 	switch (yych) {
@@ -7658,7 +7659,7 @@ yy1113:
 yy1114:
 #line 393 "parse_pack.re"
 	{ SET_HEADER(SIP_AuthInsecure); }
-#line 7662 "parse_pack.c"
+#line 7663 "parse_pack.c"
 yy1115:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7669,7 +7670,7 @@ yy1115:
 yy1116:
 #line 316 "parse_pack.re"
 	{ SET_HEADER(ConnectedLineName); }
-#line 7673 "parse_pack.c"
+#line 7674 "parse_pack.c"
 yy1117:
 	yych = *++cur;
 	switch (yych) {
@@ -7700,7 +7701,7 @@ yy1120:
 yy1121:
 #line 324 "parse_pack.re"
 	{ SET_HEADER(DestinationChannel); }
-#line 7704 "parse_pack.c"
+#line 7705 "parse_pack.c"
 yy1122:
 	++cur;
 	switch ((yych = *cur)) {
@@ -7711,7 +7712,7 @@ yy1122:
 yy1123:
 #line 325 "parse_pack.re"
 	{ SET_HEADER(DestinationContext); }
-#line 7715 "parse_pack.c"
+#line 7716 "parse_pack.c"
 yy1124:
 	++cur;
 #line 259 "parse_pack.re"
@@ -7722,7 +7723,7 @@ yy1124:
               amipack_append (pack, Response, "Follows");
               goto yyc_command;
             }
-#line 7726 "parse_pack.c"
+#line 7727 "parse_pack.c"
 /* *********************************** */
 yyc_value:
 	yych = *cur;
@@ -7732,7 +7733,7 @@ yyc_value:
 	default:	goto yy1129;
 	}
 yy1128:
-#line 426 "parse_pack.re"
+#line 427 "parse_pack.re"
 	{
               len = cur - tok;
               char *val = substr(tok, len, 0);
@@ -7745,7 +7746,7 @@ yy1128:
               free (val);
               goto yyc_value;
             }
-#line 7749 "parse_pack.c"
+#line 7750 "parse_pack.c"
 yy1129:
 	++cur;
 	yych = *cur;
@@ -7763,7 +7764,7 @@ yy1132:
               amipack_destroy (pack);
               return NULL;
             }
-#line 7767 "parse_pack.c"
+#line 7768 "parse_pack.c"
 yy1133:
 	yych = *(marker = ++cur);
 	switch (yych) {
@@ -7841,16 +7842,16 @@ yy1136:
 yy1137:
 	++cur;
 	cur = ctxmarker;
-#line 425 "parse_pack.re"
+#line 426 "parse_pack.re"
 	{ tok = cur - 1; goto yyc_key; }
-#line 7847 "parse_pack.c"
+#line 7848 "parse_pack.c"
 yy1139:
 	++cur;
 #line 237 "parse_pack.re"
 	{ goto done; }
-#line 7852 "parse_pack.c"
+#line 7853 "parse_pack.c"
 }
-#line 451 "parse_pack.re"
+#line 452 "parse_pack.re"
 
 
 done:
