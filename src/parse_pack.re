@@ -47,7 +47,7 @@
                           len -= 2; \
                           char *val = substr(tok, len, 0); \
                           amipack_append (pack, flag, val); \
-                          free (val); tok = cur; goto yyc_command;
+                          if(val){free(val);}; tok = cur; goto yyc_command;
 
 // introducing types:re2c for AMI packet
 /*! re2c parcing conditions. */
@@ -250,7 +250,7 @@ AMIPacket *amiparse_pack (const char *pack_str)
               tok = cur;
               if (hdr_type == HDR_UNKNOWN) {
                 amipack_append_unknown (pack, hdr_name, NULL);
-                free (hdr_name);
+                if(hdr_name) free (hdr_name);
               } else {
                 amipack_append (pack, hdr_type, NULL);
               }
@@ -429,11 +429,11 @@ AMIPacket *amiparse_pack (const char *pack_str)
               char *val = substr(tok, len, 0);
               if (hdr_type == HDR_UNKNOWN) {
                 amipack_append_unknown (pack, hdr_name, val);
-                free (hdr_name);
+                if(hdr_name) free (hdr_name);
               } else {
                 amipack_append (pack, hdr_type, val);
               }
-              free (val);
+              if(val) free (val);
               goto yyc_value;
             }
 
@@ -446,7 +446,7 @@ AMIPacket *amiparse_pack (const char *pack_str)
               len = cur - tok - 19; // output minus command end tag
               char *val = substr(tok, len, 0);
               amipack_append (pack, Output, val);
-              free (val);
+              if(val) free (val);
               goto done;
             }
 */
